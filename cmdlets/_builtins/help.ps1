@@ -2,7 +2,7 @@
   .SYNOPSIS
   Shows this help menu.
 #>
-param([alias("o")][switch]$online,[alias("s")][switch]$spaced)
+param([alias("o")][switch]$online,[alias("s")][switch]$spaced,[alias("n","num","numeral","numerals","numbers","shownumbers")][switch]$shownumerals,[alias("m")][switch]$more)
 if ($online) {$help_mappedCmdlets_getonline = $true} else {$help_mappedCmdlets_getonline = $false}
 
 function GetLongest {
@@ -16,10 +16,13 @@ function GetLongest {
 }
 [int]$longest = GetLongest
 
-write-host -nonewline "  Commands in shell:" -f darkgreen
+write-host ""
+write-host -nonewline "     Commands in shell:" -f darkgreen
 $l = $script:pathables.length; write-host " $l command(s)" -f darkgray
-write-host "======================================" -f darkgreen
+write-host "==========================================" -f darkgreen
+$counter = 0
 foreach ($c in $script:pathables) {
+  $counter++
   [array]$cmdletData = $c -split " § "
   [string]$cmdletPath = $cmdletData[1]
   [string]$cmdletName = $cmdletData[0]
@@ -63,13 +66,28 @@ foreach ($c in $script:pathables) {
   } elseif ($name -eq "help") {
     $desc = "Shows this help menu."
   } else {
-    $desc = (get-help $cmdletPath).synopsis
+    if ($more) {
+      $showMoreContet = $true
+      $desc = ((((((get-help $cmdletPath | out-string) -split 'SYNTAX')[1] -split "ALIASES")[0] -split "DESCRIPTION")[0] -split "\[\<CommonParameters\>\]")[0] -split "\n")[1] + '[<CommonParameters>]'
+    } else {
+      $showMoreContet = $false
+      $desc = (get-help $cmdletPath).SYNOPSIS
+    }
   }
   [int]$a = $longest - $name.length + 1
   $line = " "*$a
   $line += "$desc"
-
+  if ($shownumerals) {
+    $counterS = ""
+    [int]$cl = "$counter".length
+    [string]$pls = $script:pathables.length
+    [int]$pl = $pls.length
+    [int]$cpd = $pl - $cl
+    if ($cl -lt $pl) {[string]$counterS = " "*$cpd; [string]$counterS += "$counter"} else {$counterS = $counter}
+    write-host -nonewline "$counterS    " -f darkgray
+  }
   write-host -nonewline "$name" -f darkblue
+  if ($more) {$line = "`n   " + "$line".trimstart(" ")}
   if ($line -like "*Alias to: *") {
     [array]$lineA = $line -split ": "
     $line1 = $lineA[0] + ": "
@@ -81,4 +99,6 @@ foreach ($c in $script:pathables) {
   }
   if ($spaced) {write-host ""}
 }
+write-host ""
+write-host "(Use 'get-help <command>' for more info)" -f darkgreen
 write-host ""
