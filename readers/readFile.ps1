@@ -21,12 +21,19 @@ if ($test) {
     [string]$cmdo = "$readerp $file"
     return $cmdo
   } elseif ($cmd) {
-    if ($reader -eq "python") {$readerp = "$psscriptroot\python\python.exe"}
-    if ($reader -eq "bash") {$readerp = "$psscriptroot\gitbash_extracted_bash\usr\bin\bash.exe"}
-    if ($reader -eq "cmd") {$readerp = "cmd.exe /c"}
-    if ($reader -eq "node") {$readerp = "$psscriptroot\nodejs\node.exe"}
-    if ($reader -eq "pwsh") {$readerp = "$pwshpath -c"}
-    [string]$cmdo = "$readerp $cmd"
-    return $cmdo
+    if ($reader -ne "node") {
+      if ($reader -eq "python") {$readerp = "$psscriptroot\python\python.exe"}
+      if ($reader -eq "bash") {$readerp = "$psscriptroot\gitbash_extracted_bash\usr\bin\bash.exe"}
+      if ($reader -eq "cmd") {$readerp = "cmd.exe /c"}
+      if ($reader -eq "pwsh") {$readerp = "$pwshpath -c"}
+      [string]$cmdo = "$readerp $cmd"
+      return $cmdo
+    } else {
+      $f = "$psscriptroot\tmp.nodecommand.js"
+      if ($reader -eq "node") {$readerp = "$psscriptroot\nodejs\node.exe"}
+      $cmd | out-file $f
+      [string]$cmdo = "$readerp $f"
+      return $cmdo
+    }
   }
 }

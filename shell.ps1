@@ -56,6 +56,7 @@ function script:load-cmdlets {
     [string]$newline = "$mcmdlet § $mcmdlet"
     [array]$script:pathables += "$newline"
   }
+  $script:pathables = $script:pathables | sort
 }
 
 function CheckAndRun-input {
@@ -66,6 +67,7 @@ function CheckAndRun-input {
   $ch2 = ' & '
   [array]$splitString = $in
   if ($in -like "*$ch*") {[array]$splitString = $in -split " \| "} else {[array]$splitString = $in -split "\|"}
+  [array]$script:partials = $null
   foreach ($commando in $splitString) {
     [array]$stringA = $commando -split " "
     [string]$command = $stringA[0]
@@ -75,11 +77,28 @@ function CheckAndRun-input {
       [array]$cmdletData = $cmdlet -split " § "
       [string]$cmdletPath = $cmdletData[1]
       [string]$cmdlet = $cmdletData[0]
+      $final_cmdletpath = ""
       if ($command -eq $cmdlet) {
-        $in = $in -replace "$command",". $cmdletPath"
+        $script:final_cmdletpath = $cmdletPath
+        $script:final_params = $params
       }
     }
+    #$in = $in -replace "$command",". $final_cmdletPath"
+    [array]$script:partials += ". $script:final_cmdletpath $script:final_params"
   }
+  if ($script:partials.length -gt "1") {
+    foreach ($p in $script:partials) {
+      $num = [array]::indexof($script:partials,$p)
+      $t = $script:partials[$num]
+      $script:partials[$num] = "$t | "
+      if ($script:debug_commandparts_final) {write-host -nonewline "parsed.partial: " -f darkgray; write-host "$p" -f green}
+    }
+    $t2 = $script:partials[-1]
+    $script:partials[-1] = "$t2" -replace " \| ",''
+  }
+  [string]$script:partials_string = $script:partials
+  $in = $partials_string
+  if ($script:debug_commandparts_final) {write-host -nonewline "parsed.input: " -f darkgray; write-host -nonewline "$in`n" -f green}
 
   $cmdFound = $false
   foreach ($cmdlet in $script:pathables) {
