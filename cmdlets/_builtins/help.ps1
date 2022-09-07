@@ -68,7 +68,12 @@ foreach ($c in $script:pathables) {
   } else {
     if ($more) {
       $showMoreContet = $true
-      $desc = ((((((get-help $cmdletPath | out-string) -split 'SYNTAX')[1] -split "ALIASES")[0] -split "DESCRIPTION")[0] -split "\[\<CommonParameters\>\]")[0] -split "\n")[1] + '[<CommonParameters>]'
+      $content = ""
+      $content = (((((((get-help $cmdletPath | out-string) -split 'SYNTAX')[1] -split "ALIASES")[0] -split "DESCRIPTION")[0] -split "\[\<CommonParameters\>\]")[0] -split "\n")[1] + '[<CommonParameters>]').trimstart(" ")
+        [array]$contentA = $content -split " "
+        [string]$params = $contentA[1.. $contentA.length]
+        $params = $params
+      $desc = (get-help $cmdletPath).SYNOPSIS
     } else {
       $showMoreContet = $false
       $desc = (get-help $cmdletPath).SYNOPSIS
@@ -86,17 +91,21 @@ foreach ($c in $script:pathables) {
     if ($cl -lt $pl) {[string]$counterS = " "*$cpd; [string]$counterS += "$counter"} else {$counterS = $counter}
     write-host -nonewline "$counterS    " -f darkgray
   }
+  #name
   write-host -nonewline "$name" -f darkblue
-  if ($more) {$line = "`n   " + "$line".trimstart(" ")}
+  #desc
+  if ($more) {$col = "darkgreen"} else {$col = "darkgray"}
   if ($line -like "*Alias to: *") {
     [array]$lineA = $line -split ": "
     $line1 = $lineA[0] + ": "
     $line2 = $lineA[1]
-    write-host -nonewline "$line1" -f darkgray
+    write-host -nonewline "$line1" -f $col
     write-host "$line2" -f gray
   } else {
-    write-host "$line" -f darkgray
+    write-host "$line" -f $col
   }
+  #params
+  if ($more) {$s = "   " + "$params".trimstart(" "); write-host $s -f darkgray}
   if ($spaced) {write-host ""}
 }
 write-host ""
