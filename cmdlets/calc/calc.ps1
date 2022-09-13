@@ -16,7 +16,10 @@ param(
   [Alias("p")]
   [string]$printSheet,
   [Alias("o")]
-  [string]$printOut
+  [string]$printOut,
+
+  [Alias("online")]
+  [switch]$usemathjs
 )
 if ($printSheet -ne "") {$printSheet = $false}
 if ($printOut) {$script:printOut = $printOut}
@@ -51,6 +54,21 @@ if ($mathlibinfo) {
   write-host "isCombi : $mathlib_iscombi"
   pause
   exit
+}
+
+#mathjs.org
+if ($usemathjs) {
+  if ($expression) {
+    Add-Type -AssemblyName System.Web
+    $url="https://api.mathjs.org/v4/"
+    $tua='?expr='
+    $expression = [System.Web.HttpUtility]::UrlEncode($expression)
+    [string]$url = $url + $tua + $expression
+    $data = iwr($url)
+    $response = $data.rawcontent
+    $response = ($response -split "`n")[-1]
+    return $response
+  }
 }
 
 function ValidateMathInput() {

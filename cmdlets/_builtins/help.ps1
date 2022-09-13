@@ -109,5 +109,5 @@ foreach ($c in $script:pathables) {
   if ($spaced) {write-host ""}
 }
 write-host ""
-write-host "(Use 'get-help <command>' for more info)" -f darkgreen
+write-host "(Use 'get-help <command>' for more info about that command, including the 'help' command.)" -f darkgreen
 write-host ""
