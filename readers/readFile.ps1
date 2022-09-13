@@ -22,11 +22,12 @@ if ($test) {
     return $cmdo
   } elseif ($cmd) {
     if ($reader -ne "node") {
-      if ($reader -eq "python") {$readerp = "$psscriptroot\python\python.exe"}
+      if ($reader -eq "python") {$readerp = "$psscriptroot\python\python.exe -c"}
       if ($reader -eq "bash") {$readerp = "$psscriptroot\gitbash_extracted_bash\usr\bin\bash.exe"}
       if ($reader -eq "cmd") {$readerp = "cmd.exe /c"}
       if ($reader -eq "pwsh") {$readerp = "$pwshpath -c"}
-      [string]$cmdo = "$readerp $cmd"
+      if ($reader -eq "python") {[string]$cmdo = "$readerp " + "'" + "$cmd" + "'"} else {[string]$cmdo = "$readerp $cmd"}
+      write-host "$cmdo"
       return $cmdo
     } else {
       $f = "$psscriptroot\tmp.nodecommand.js"

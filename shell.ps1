@@ -27,6 +27,48 @@ $script:basedir = $psscriptroot
 if ($script:startdir) {} else {$script:startdir = $pwd}
 if ($sdir) {$startdir = $sdir}
 
+function script:write-message{
+  #Usage:   write-message <text-array> <foregroundcolor-array> <backgroundcolor-array>
+  #         if <text-array> has more then one item, the function will write them both to one line but with diffrent color options if the color array have more then one item.
+  #         obs text.1 gets colored by fcolor.1 and fcolor.2, while text.2 is colored by corresponding places in color arrays.
+  #         if no colors are given it will use the $host.ui.rawui colors (may inpact colors on older pwsh versions)
+  #
+  param([array]$text,[alias("fc")][array]$foregroundcolor,[alias("bc")][array]$backgroundcolor)
+  #Single mode
+  if ($array.length -eq 1) {
+    [string]$string = "$text"
+    [string]$fcolor = "$foregroundcolor"
+    [string]$bcolor = "$backgroundcolor"
+    if ($fcolor -eq "") {$fcolor = $host.ui.rawui.foregroundcolor}
+    if ($bcolor -eq "") {$bcolor = $host.ui.rawui.backgroundcolor}
+    write-host "$string" -f $fcolor -b $bcolor
+  #MultiMode
+  } else {
+    [int]$counter = 0
+    foreach ($t in $text) {
+      [string]$string = "$t"
+      if ($foregroundcolor.length -gt 1) {
+        [string]$fcolor = $foregroundcolor[$counter]
+      } else { 
+        [string]$fcolor = $foregroundcolor 
+      }
+      if ($backgroundcolor.length -gt 1) {
+        [string]$bcolor = $backgroundcolor[$counter]
+      } else {
+        [string]$bcolor = $backgroundcolor
+      }
+      if ($fcolor -eq "") {$fcolor = $host.ui.rawui.foregroundcolor}
+      if ($bcolor -eq "") {$bcolor = $host.ui.rawui.backgroundcolor}
+      $counter++
+      if ($counter -lt $text.length) {
+        write-host -nonewline "$string" -f $fcolor -b $bcolor
+      } else {
+        write-host "$string" -f $fcolor -b $bcolor
+      }
+    }
+  }
+}
+
 function script:load-cmdlets {
   $script:pathables = $null
   cd $psscriptroot\cmdlets
@@ -151,6 +193,7 @@ function writeDirPrefix($dirp) {
 
 function write-header {
   cls
+  write-message "Welcome, write 'help' for help." green
 }
 
 ##shell
