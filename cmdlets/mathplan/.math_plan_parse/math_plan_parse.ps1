@@ -1,4 +1,4 @@
-param([int]$week,[string]$file,[switch]$table)
+param([int]$week,[string]$file,[switch]$table,[string]$day)
 
 write-host "Loading... `n" -f darkyellow
 
@@ -13,6 +13,13 @@ if ($mathplan_file -and ! $file) {$file = $script:mathplan_file}
 function indexof {param([array]$array,[string]$term); $c = 0; foreach ($i in $array) {if ($i -eq "$term") {return $c}; $c++}}
 
 $data = import-xlsx $file
+
+if ($day -eq "må" -or -eq "monday" -or -eq "mo") {$day = "Måndag"}
+if ($day -eq "ti" -or -eq "tuesday" -or -eq "tu") {$day = "Tisdag"}
+if ($day -eq "on" -or -eq "wednesday" -or -eq "we") {$day = "Onsdag"}
+if ($day -eq "to" -or -eq "thursday" -or -eq "th") {$day = "Torsdag"}
+if ($day -eq "fr" -or -eq "friday") {$day = "Fredag"}
+
 cls
 
 $index = indexof $data."TE1 Matematik 1c" $week
@@ -97,7 +104,7 @@ if ($table) {
     $line
   }
 } else {
-  foreach ($day in $weekdata.days) {
+  if ($day) {
     [int]$i = [array]::IndexOf($weekdata.days,$day)
     write-host -nonewline "Week_" -f darkblue
     write-host -nonewline $weekdata.week -f darkblue
@@ -130,5 +137,40 @@ if ($table) {
     write-host $ex3 -f darkgreen
     write-host ""
     write-host ""
+  } else {
+    foreach ($day in $weekdata.days) {
+      [int]$i = [array]::IndexOf($weekdata.days,$day)
+      write-host -nonewline "Week_" -f darkblue
+      write-host -nonewline $weekdata.week -f darkblue
+      write-host -nonewline ": " -f darkblue
+      write-host "$day" -f darkyellow
+      write-host "==================================================" -f green
+      write-host -nonewline "lession_desc: " -f darkblue
+      $lessdesc = ($weekdata.lession_desc[$i]).replace('§null§',"")
+      write-host $lessdesc -f darkgreen
+      $bookpage = ($weekdata.book_page[$i]).replace('§null§',"")
+      write-host -nonewline "book_page:    " -f darkblue
+      write-host $bookpage -f darkgreen
+      $upgst = ($weekdata.upg_st[$i]).replace('§null§',"")
+      write-host -nonewline "upg_start:    " -f darkblue
+      write-host $upgst -f darkgreen
+      $upgec = ($weekdata.upg_ec[$i]).replace('§null§',"")
+      write-host -nonewline "upg_E-C:      " -f darkblue
+      write-host $upgec -f darkgreen
+      $upgca = ($weekdata.upg_ca[$i]).replace('§null§',"")
+      write-host -nonewline "upg_C-A:      " -f darkblue
+      write-host $upgca -f darkgreen
+      $ex1 = ($weekdata.ex_1[$i]).replace('§null§',"")
+      write-host -nonewline "extrainfo_1:  " -f darkblue
+      write-host $ex1 -f darkgreen
+      $ex2 = ($weekdata.ex_2[$i]).replace('§null§',"")
+      write-host -nonewline "extrainfo_2:  " -f darkblue
+      write-host $ex2 -f darkgreen
+      $ex3 = ($weekdata.ex_3[$i]).replace('§null§',"")
+      write-host -nonewline "extrainfo_3:  " -f darkblue
+      write-host $ex3 -f darkgreen
+      write-host ""
+      write-host ""
+    }
   }
 }

@@ -1,4 +1,5 @@
 <#
+  .SYNOPSIS
   prints out our math plan.
 #>
 param([int]$week,[string]$file,[switch]$table)
