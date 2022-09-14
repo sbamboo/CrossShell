@@ -1,3 +1,5 @@
+# License: https://github.com/simonkalmiclaesson/CrossShell/blob/main/license.md (licence.md)
+
 param(
   [alias("startdir")]
   $sdir,
@@ -123,6 +125,24 @@ function CheckAndRun-input {
       if ($command -eq $cmdlet) {
         $script:final_cmdletpath = $cmdletPath
         $script:final_params = $params
+        # Calculator " fix
+        if ($command -eq "calc") {
+          [array]$paramsA = $params -split " "
+          [string]$first_param = $paramsA[0]
+          if ($first_param -notlike "*-expr*") {
+            if ($first_param[0] -ne "-") {
+              $paramsA[0] = '"' + $first_param + '"'
+            }
+          } else {
+            $paramsA[0] = '"' + $first_param + '"'
+          }
+          $params = ""
+          foreach ($p in $paramsA) {
+            $params += "$p "
+          }
+          $params = $params.trimend(" ")
+          $script:final_params = $params
+        }
       }
     }
     #$in = $in -replace "$command",". $final_cmdletPath"
