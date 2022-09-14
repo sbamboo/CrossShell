@@ -1,10 +1,14 @@
 param([int]$week,[string]$file,[switch]$table)
 
+write-host "Loading... `n" -f darkyellow
+
 if (get-module PSExcel) {} else {Install-module PSExcel}
 import-module psexcel -force
 
-$week = 37
-$file = "C:\users\$env:Username\downloads\Planering M1 HT22.xlsx"
+if ($week) {} else {$script:mathplan_week = "{0:d1}" -f ($(Get-Culture).Calendar.GetWeekOfYear((Get-Date),[System.Globalization.CalendarWeekRule]::FirstFourDayWeek, [DayOfWeek]::Monday))}
+if ($file) {} else {$script:mathplan_file = "$psscriptroot\Planering M1 HT22.xlsx"}
+if ($mathplan_week -and ! $week) {$week = $script:mathplan_week}
+if ($mathplan_file -and ! $file) {$file = $script:mathplan_file}
 
 function indexof {param([array]$array,[string]$term); $c = 0; foreach ($i in $array) {if ($i -eq "$term") {return $c}; $c++}}
 
