@@ -1,4 +1,4 @@
-param([int]$week,[string]$file)
+param([int]$week,[string]$file,[switch]$table)
 
 if (get-module PSExcel) {} else {Install-module PSExcel}
 import-module psexcel -force
@@ -86,22 +86,45 @@ function GetLongest {
 }
 [int]$longestUPG = GetLongest($upg_stArray)
 
-
-
-foreach ($day in $weekdata.days) {
-  [int]$i = [array]::IndexOf($weekdata.days,$day)
-  write-host -nonewline $weekdata.week -f darkgreen
-  write-host -nonewline ": " -f darkgreen
-  write-host "$day" -f blue
-  write-host "================" -f green
-  write-host $weekdata.lession_desc[$i]
-  write-host $weekdata.book_page[$i]
-  write-host $weekdata.upg_st[$i]
-  write-host $weekdata.upg_ec[$i]
-  write-host $weekdata.upg_ca[$i]
-  write-host $weekdata.ex_1[$i]
-  write-host $weekdata.ex_2[$i]
-  write-host $weekdata.ex_3[$i]
-  write-host ""
+if ($table) {
+  foreach ($day in $weekdata.days) {
+    [int]$i = [array]::IndexOf($weekdata.days,$day)
+    $line = $day + "~" + $weekdata.lession_desc[$i] + "~" + $weekdata.book_page[$i] + "~" + $weekdata.upg_st[$i] + "~" + $weekdata.upg_ec[$i] + "~" + $weekdata.upg_ca[$i] + "~" + $weekdata.ex_1[$i] + "~" + $weekdata.ex_2[$i] + "~" + $weekdata.ex_3[$i]
+    $line
+  }
+} else {
+  foreach ($day in $weekdata.days) {
+    [int]$i = [array]::IndexOf($weekdata.days,$day)
+    write-host -nonewline "Week_" -f darkblue
+    write-host -nonewline $weekdata.week -f darkblue
+    write-host -nonewline ": " -f darkblue
+    write-host "$day" -f darkyellow
+    write-host "==================================================" -f green
+    write-host -nonewline "lession_desc: " -f darkblue
+    $lessdesc = ($weekdata.lession_desc[$i]).replace('§null§',"")
+    write-host $lessdesc -f darkgreen
+    $bookpage = ($weekdata.book_page[$i]).replace('§null§',"")
+    write-host -nonewline "book_page:    " -f darkblue
+    write-host $bookpage -f darkgreen
+    $upgst = ($weekdata.upg_st[$i]).replace('§null§',"")
+    write-host -nonewline "upg_start:    " -f darkblue
+    write-host $upgst -f darkgreen
+    $upgec = ($weekdata.upg_ec[$i]).replace('§null§',"")
+    write-host -nonewline "upg_E-C:      " -f darkblue
+    write-host $upgec -f darkgreen
+    $upgca = ($weekdata.upg_ca[$i]).replace('§null§',"")
+    write-host -nonewline "upg_C-A:      " -f darkblue
+    write-host $upgca -f darkgreen
+    $ex1 = ($weekdata.ex_1[$i]).replace('§null§',"")
+    write-host -nonewline "extrainfo_1:  " -f darkblue
+    write-host $ex1 -f darkgreen
+    $ex2 = ($weekdata.ex_2[$i]).replace('§null§',"")
+    write-host -nonewline "extrainfo_2:  " -f darkblue
+    write-host $ex2 -f darkgreen
+    $ex3 = ($weekdata.ex_3[$i]).replace('§null§',"")
+    write-host -nonewline "extrainfo_3:  " -f darkblue
+    write-host $ex3 -f darkgreen
+    write-host ""
+    write-host ""
+  }
 }
-
