@@ -14,11 +14,11 @@ function indexof {param([array]$array,[string]$term); $c = 0; foreach ($i in $ar
 
 $data = import-xlsx $file
 
-if ($day -eq "må" -or -eq "monday" -or -eq "mo") {$day = "Måndag"}
-if ($day -eq "ti" -or -eq "tuesday" -or -eq "tu") {$day = "Tisdag"}
-if ($day -eq "on" -or -eq "wednesday" -or -eq "we") {$day = "Onsdag"}
-if ($day -eq "to" -or -eq "thursday" -or -eq "th") {$day = "Torsdag"}
-if ($day -eq "fr" -or -eq "friday") {$day = "Fredag"}
+if ($day -eq "må" -or $day -eq "monday" -or $day -eq "mo") {$day = "Måndag"}
+if ($day -eq "ti" -or $day -eq "tuesday" -or $day -eq "tu") {$day = "Tisdag"}
+if ($day -eq "on" -or $day -eq "wednesday" -or $day -eq "we") {$day = "Onsdag"}
+if ($day -eq "to" -or $day -eq "thursday" -or $day -eq "th") {$day = "Torsdag"}
+if ($day -eq "fr" -or $day -eq "friday") {$day = "Fredag"}
 
 cls
 
@@ -104,7 +104,7 @@ if ($table) {
     $line
   }
 } else {
-  if ($day) {
+  if ($day -ne "") {
     [int]$i = [array]::IndexOf($weekdata.days,$day)
     write-host -nonewline "Week_" -f darkblue
     write-host -nonewline $weekdata.week -f darkblue
