@@ -150,7 +150,7 @@ function CheckAndRun-input {
         $script:final_cmdletpath = $cmdletPath
         $script:final_params = $params
         # Calculator " fix
-        if ($command -eq "calc") {
+        if ($command -eq "calc" -or $command -eq "mcalc") {
           [array]$paramsA = $params -split " "
           [string]$first_param = $paramsA[0]
           if ($first_param -notlike "*-expr*") {
