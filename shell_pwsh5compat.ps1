@@ -1,5 +1,3 @@
-# License: https://github.com/simonkalmiclaesson/CrossShell/blob/main/license.md (licence.md)
-
 param(
   [alias("startdir")]
   $sdir,
@@ -99,11 +97,31 @@ function script:load-cmdlets {
   $script:pathables = $null
   cd $psscriptroot\cmdlets
   $files = get-childitem -recurse
-
   foreach ($file in $files) {
-    $fileext = $file | split-path -extension
-    $filename = $file | split-path -leafbase
-    $filepath = "$file"
+    $script:shell_loadcmd_curfile_filepath = "$file"
+    $script:shell_loadcmd_curfile_filename = ""
+    $script:shell_loadcmd_curfile_fileext = ""
+    if ($hostID -eq "pwsh.5l" -or $hostID -eq "pwsh.6l") {
+      if ($file.mode -eq "-a----") {
+        [string]$fileleaf = $file.directory
+        if ($fileleaf[-1] -ne "/" -and $fileleaf[-1] -ne "\") {[string]$fileleaf += "/"}
+        [string]$fileleaf += $file.name
+        $script:shell_loadcmd_curfile_filepath = ([string]$fileleaf).replace('/','\')
+        $fileleaf = $fileleaf | split-path -leaf
+        [array]$fileleafA = $fileleaf -split "\."
+        $fileextL = $fileleafA[1]
+        $script:shell_loadcmd_curfile_fileext = "." + "$fileextL"
+        $filenameL = $fileleafA[0]
+        $script:shell_loadcmd_curfile_filename = "$filenameL"
+      }
+    } else {
+      $script:shell_loadcmd_curfile_fileext = $file | split-path -extension
+      $script:shell_loadcmd_curfile_filename = $file | split-path -leafbase
+    }
+    $filename = $script:shell_loadcmd_curfile_filename
+    $fileext = $script:shell_loadcmd_curfile_fileext
+    $filepath = $script:shell_loadcmd_curfile_filepath
+    write-host "'$filepath'  '$filename'  '$fileext'"
     $pathableFile = $false
     if ($fileext -eq ".ps1") {$pathableFile = $true}
     if ($fileext -eq ".bat") {$pathableFile = $true}
@@ -149,24 +167,6 @@ function CheckAndRun-input {
       if ($command -eq $cmdlet) {
         $script:final_cmdletpath = $cmdletPath
         $script:final_params = $params
-        # Calculator " fix
-        if ($command -eq "calc") {
-          [array]$paramsA = $params -split " "
-          [string]$first_param = $paramsA[0]
-          if ($first_param -notlike "*-expr*") {
-            if ($first_param[0] -ne "-") {
-              $paramsA[0] = '"' + $first_param + '"'
-            }
-          } else {
-            $paramsA[0] = '"' + $first_param + '"'
-          }
-          $params = ""
-          foreach ($p in $paramsA) {
-            $params += "$p "
-          }
-          $params = $params.trimend(" ")
-          $script:final_params = $params
-        }
       }
     }
     #$in = $in -replace "$command",". $final_cmdletPath"
@@ -236,7 +236,7 @@ function writeDirPrefix($dirp) {
 }
 
 function write-header {
-  cls
+  #cls
   if ($script:hostID -eq "pwsh.5l") {
     write-message "Warning! Shell started with powershell 5. This app uses and is coded in powershell 7 so please use that or newer for full functionality. Altought some things may work in powershell 5 no support is given for it. For instructions se: ","https://docs.microsoft.com/en-us/powershell/scripting/install/installing-powershell-on-windows" White,Cyan DarkRed
   }
@@ -256,7 +256,7 @@ function write-header {
 if ($pipedcommand) {load-cmdlets; CheckAndRun-input $pipedcommand;exit}
 $host.ui.rawui.windowtitle = "ShellTest 0.0.1"
 $loop = $true
-if ($script:hostID -ne "pwsh.5l") {load-cmdlets}
+load-cmdlets
 cd $startdir
 $prefix = $script:default_prefix
 write-header

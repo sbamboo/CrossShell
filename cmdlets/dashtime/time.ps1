@@ -2,5 +2,5 @@
   .SYNOPSIS
   Alias to dashtime.
 #>
-param([switch]$d,[switch]$t,[switch]$p)
+param([Alias("t")][switch]$timeout,[Alias("p")][switch]$pause)
 . $psscriptroot\dashtime.ps1 @PSBoundParameters

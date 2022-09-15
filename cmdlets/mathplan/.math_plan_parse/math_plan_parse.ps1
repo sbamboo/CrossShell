@@ -1,4 +1,4 @@
-param([int]$week,[string]$file,[switch]$table,[string]$day)
+param([int]$week,[string]$file,[switch]$table,[string]$day,[Alias("dmode")][switch]$daymode)
 
 write-host "Loading... `n" -f darkyellow
 
@@ -13,6 +13,8 @@ if ($mathplan_file -and ! $file) {$file = $script:mathplan_file}
 function indexof {param([array]$array,[string]$term); $c = 0; foreach ($i in $array) {if ($i -eq "$term") {return $c}; $c++}}
 
 $data = import-xlsx $file
+
+if ($daymode) {if ($day -eq "") {$day = (get-date).DayOfWeek}}
 
 if ($day -eq "må" -or $day -eq "monday" -or $day -eq "mo") {$day = "Måndag"}
 if ($day -eq "ti" -or $day -eq "tuesday" -or $day -eq "tu") {$day = "Tisdag"}
