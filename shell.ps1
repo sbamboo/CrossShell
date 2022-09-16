@@ -220,6 +220,16 @@ function forceExit {
   cd $curdir
 }
 
+function logCommand {
+  param([string]$command,[switch]$doFormat)
+  if ($doFormat) {
+    [string]$commandS = "format.raw,type.string:  $command"
+    $commandS | out-file -file "$psscriptroot\assets\inputs.log" -append
+  } else {
+    $command | out-file -file "$psscriptroot\assets\inputs.log" -append
+  }
+}
+
 if ($script:hasresetforceExit) {} else {forceExit -reset; $script:hasresetforceExit}
 
 function writeDirPrefix($dirp) {
@@ -274,5 +284,8 @@ while ($loop) {
     forceExit -set
     exit
   }
-  if ($command -ne "") {CheckAndRun-input $command}
+  if ($command -ne "") {
+    logCommand -command $command
+    CheckAndRun-input $command
+  }
 }
