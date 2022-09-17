@@ -223,7 +223,8 @@ function forceExit {
 function logCommand {
   param([string]$command,[switch]$doFormat)
   if ($doFormat) {
-    [string]$commandS = "format.raw,type.string:  $command"
+    [string]$datetag = "[" + $(get-date -format g) + "]  "
+    [string]$commandS = "$datetag $command"
     $commandS | out-file -file "$psscriptroot\assets\inputs.log" -append
   } else {
     $command | out-file -file "$psscriptroot\assets\inputs.log" -append
@@ -285,7 +286,7 @@ while ($loop) {
     exit
   }
   if ($command -ne "") {
-    logCommand -command $command
+    logCommand -command $command -doFormat
     CheckAndRun-input $command
   }
 }
