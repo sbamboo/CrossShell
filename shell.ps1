@@ -20,6 +20,7 @@ if ($interpret) {
 
 $old_windowtitle = $host.ui.rawui.windowtitle
 if ($script:old_path) {} else {$script:old_path = $pwd}
+$script:crosshell_versionID = "0.0.1_dev-A01"
 $script:default_prefix = "> "
 $script:prefix_enabled = $true
 $script:prefixcolor = "darkgray"
@@ -220,6 +221,22 @@ function forceExit {
   cd $curdir
 }
 
+function write-profile {
+  param([bool]$hasmorelines)
+  if (test-path "$psscriptroot\assets\profile.ps1") {
+    . "$psscriptroot\assets\profile.ps1"
+  } else {
+    if ($script:hostID -ne "pwsh.5l") {
+      write-message "OBS! No profile file, please add: ","/assets/profile.ps1" DarkYellow,Cyan
+    } else {
+      write-message "OBS! No profile file, please add: ","/assets/profile.ps1" Yellow,Cyan
+    }
+    if ($hasmorelines -ne $true) {
+      write-host ""
+    }
+  }
+}
+
 function logCommand {
   param([string]$command,[switch]$doFormat)
   if ($doFormat) {
@@ -248,19 +265,31 @@ function writeDirPrefix($dirp) {
 
 function write-header {
   cls
+  $hasmorelines = $false
+  #Hosts
   if ($script:hostID -eq "pwsh.5l") {
     write-message "Warning! Shell started with powershell 5. This app uses and is coded in powershell 7 so please use that or newer for full functionality. Altought some things may work in powershell 5 no support is given for it. For instructions se: ","https://docs.microsoft.com/en-us/powershell/scripting/install/installing-powershell-on-windows" White,Cyan DarkRed
+    $hasmorelines = $true
   }
   if ($script:hostID -eq "pwsh.6l") {
     write-message "Warning! Shell started with powershell 6. This app uses and is coded in powershell 7 so please update to that or newer for full functionality. Altought some things may work in powershell 6 no support is given for it. For instructions se: ","https://docs.microsoft.com/en-us/powershell/scripting/install/installing-powershell-on-windows" White,Cyan DarkRed
+    $hasmorelines = $true
   }
   if ($script:hostID -eq "vscodehost") {
-    if ($script:msgcentral_vscodenotice -ne $false) {write-message "OBS! Shell started with vscode, scaling and buffersaves may be broken. ","(To disable this message use: 'msgcentral -disable vscodenotice')" White,DarkGray Darkblue}
+    if ($script:msgcentral_vscodenotice -ne $false) {write-message "OBS! Shell started with vscode, scaling and buffersaves may be broken. ","(To disable this message use: 'msgcentral -disable vscodenotice')" White,DarkGray Darkblue; $hasmorelines = $true}
   }
   if ($script:hostID -eq "unknown") {
     write-message "Warning! Shell started with unknown powershell version and host. Compatability and featureset is not garanteed. Please use powershell 7." White DarkYellow
+    $hasmorelines = $true
   }
-  write-message "Welcome, write 'help' for help." green
+  #Version
+  if ($script:crosshell_versionID -like "*dev*") {
+    write-message "You are running a development version of crosshell, bugs may occure and some features migth be missing." DarkRed
+    $hasmorelines = $true
+  }
+  write-profile -hasmorelines $hasmorelines
+  if ($hasmorelines -eq "$true") {write-host ""}
+  write-message "Welcome, write 'help' for help. To add messages to here edit: /assets/profile.ps1" green
 }
 
 ##shell
