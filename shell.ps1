@@ -10,7 +10,7 @@ param(
 
   [alias("f")]
   [alias("script")]
-  [alias("scriptfile")]
+  [alias("scmd")]
   [alias("file")]
   $scriptfile,
 
