@@ -4,9 +4,15 @@ param(
   [alias("startdir")]
   $sdir,
 
-  [alias("f")]
+  [alias("i")]
   [alias("interpreter")]
   $interpret,
+
+  [alias("f")]
+  [alias("script")]
+  [alias("scriptfile")]
+  [alias("file")]
+  $scriptfile,
 
   [alias("c")]
   [alias("command")]
@@ -18,7 +24,11 @@ if ($interpret) {
   exit
 }
 
+$script:shell_param_scriptfile = $scriptfile
 $old_windowtitle = $host.ui.rawui.windowtitle
+$script:shell_opt_windowtitle_current = $host.ui.rawui.windowtitle
+$script:shell_opt_windowtitle_original = $old_windowtitle
+$script:shell_opt_windowtitle_last = $host.ui.rawui.windowtitle
 if ($script:old_path) {} else {$script:old_path = $pwd}
 $script:crosshell_versionID = "0.0.1_dev-A01"
 $script:default_prefix = "> "
@@ -128,7 +138,7 @@ function script:load-cmdlets {
   $script:pathables = $script:pathables | sort
 }
 
-function CheckAndRun-input {
+function script:CheckAndRun-input {
   param([string]$in)
   $inc = ""
   if ($script:debug_commandparts -eq $true) {write-host -nonewline "recived.alinput: " -f darkgray; write-host "$in" -b darkblue}
@@ -293,14 +303,23 @@ function write-header {
 }
 
 ##shell
-if ($pipedcommand) {load-cmdlets; CheckAndRun-input $pipedcommand;exit}
-$host.ui.rawui.windowtitle = "ShellTest 0.0.1"
+if ($pipedcommand) {
+  load-cmdlets; CheckAndRun-input $pipedcommand; $host.ui.rawui.windowtitle = $old_windowtitle; cd $old_path; exit}
+if ($scriptfile) {[string]$cc = "script " + '"' + $scriptfile + '"'; load-cmdlets; CheckAndRun-input $cc; $host.ui.rawui.windowtitle = $old_windowtitle; cd $old_path; exit}
+#window title
+  $script:shell_opt_windowtitle_normal = "ShellTest 0.0.1"
+  $script:shell_opt_windowtitle_current = $script:shell_opt_windowtitle_normal
+  #load saved title
+  if (test-path "$script:basedir\assets\title.state") { $script:shell_opt_windowtitle_current = gc "$script:basedir\assets\title.state"}
+#loop
 $loop = $true
 if ($script:hostID -ne "pwsh.5l") {load-cmdlets}
 cd $startdir
 $prefix = $script:default_prefix
 write-header
 while ($loop) {
+  #windowtitle
+  $host.ui.rawui.windowtitle = $script:shell_opt_windowtitle_current
   forceExit -check
   $script:current_directory = $pwd
   if ($script:gobackcommand) {iex($script:gobackcommand); $script:gobackcommand = $null}
