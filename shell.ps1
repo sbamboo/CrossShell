@@ -16,7 +16,12 @@ param(
 
   [alias("c")]
   [alias("command")]
-  $pipedcommand
+  $pipedcommand,
+
+  [alias("nexit")]
+  [switch]$noexit,
+
+  [switch]$printcomments
 )
 
 if ($interpret) {
@@ -24,7 +29,11 @@ if ($interpret) {
   exit
 }
 
-$script:shell_param_scriptfile = $scriptfile
+$script:shell_opt_multiline = $false
+
+$script:shell_param_printcomments = $printcomments
+$script:shell_param_noexit = $noexit
+[string]$script:shell_param_scriptfile = [string]$scriptfile
 $old_windowtitle = $host.ui.rawui.windowtitle
 $script:shell_opt_windowtitle_current = $host.ui.rawui.windowtitle
 $script:shell_opt_windowtitle_original = $old_windowtitle
@@ -213,6 +222,14 @@ function script:CheckAndRun-input {
   if ($inc) {iex($inc)}
 }
 
+function splitCommandAndRun {
+  param($command)
+  [array]$commandA = $command -split ';'
+  foreach ($comm in $commandA) {
+    CheckAndRun-input $commandA
+  }
+}
+
 function forceExit {
   param([switch]$check,[switch]$set,[switch]$reset)
   $curdir = get-location
@@ -303,8 +320,8 @@ function write-header {
 }
 
 ##shell
-if ($pipedcommand) { load-cmdlets; CheckAndRun-input $pipedcommand; $host.ui.rawui.windowtitle = $old_windowtitle; cd $old_path; exit}
-if ($scriptfile) {[string]$cc = "script " + '"' + $scriptfile + '"'; load-cmdlets; CheckAndRun-input $cc; $host.ui.rawui.windowtitle = $old_windowtitle; cd $old_path; exit}
+if ($pipedcommand) { load-cmdlets; if ($script:shell_opt_multiline) {splitCommandAndRun $pipedcommand} else {CheckAndRun-input $pipedcommand}; $host.ui.rawui.windowtitle = $old_windowtitle; cd $old_path; if ($noexit) {pause} else {exit}}
+if ($scriptfile) {[string]$cc = "script " + '"' + $scriptfile + '"'; load-cmdlets; CheckAndRun-input $cc; $host.ui.rawui.windowtitle = $old_windowtitle; cd $old_path; if ($noexit) {pause} else {exit}}
 #window title
   $script:shell_opt_windowtitle_normal = "ShellTest 0.0.1"
   $script:shell_opt_windowtitle_current = $script:shell_opt_windowtitle_normal
@@ -334,6 +351,6 @@ while ($loop) {
   }
   if ($command -ne "") {
     logCommand -command $command -doFormat
-    CheckAndRun-input $command
+    if ($script:shell_opt_multiline) {splitCommandAndRun $command} else {CheckAndRun-input $command}
   }
 }

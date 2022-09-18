@@ -8,7 +8,13 @@ if (test-path $file) {
     $data = gc $file
     if ($data) {
         foreach ($_ in $data) {
-            CheckAndRun-input $_
+            [string]$cmd = $_
+            [array]$cmdA = $cmd -split ';'
+            foreach ($scmd in $cmdA) {
+                $scmd = $scmd.TrimStart(" ")
+                if ($scmd[0] -eq "#") {$scmd = "rem " + $scmd.TrimStart("#")}
+                CheckAndRun-input $scmd
+            }
         }
     }
 }

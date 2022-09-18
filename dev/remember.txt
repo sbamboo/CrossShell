@@ -33,3 +33,7 @@ es (equationSolver):
     }
   }
 }
+
+multiline support + split by ; (in checkandrun)
+*comments (command, -printcomments)
+*-noexit flag
