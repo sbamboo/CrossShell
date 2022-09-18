@@ -10,4 +10,5 @@ if ($full) {
   .\shell.ps1 -sdir $script:current_directory
 } else {
   load-cmdlets
+  $script:gobackcommand = "cd $script:current_directory"
 }

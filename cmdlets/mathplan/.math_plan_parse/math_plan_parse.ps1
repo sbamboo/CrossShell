@@ -21,6 +21,10 @@ if ($day -eq "ti" -or $day -eq "tuesday" -or $day -eq "tu") {$day = "Tisdag"}
 if ($day -eq "on" -or $day -eq "wednesday" -or $day -eq "we") {$day = "Onsdag"}
 if ($day -eq "to" -or $day -eq "thursday" -or $day -eq "th") {$day = "Torsdag"}
 if ($day -eq "fr" -or $day -eq "friday") {$day = "Fredag"}
+if ($day -eq "Sunday" -or $day -eq "Saturday") {
+  write-host "Given day: $day has no plan." -f red
+  exit
+}
 
 cls
 

@@ -4,9 +4,15 @@ param(
   [alias("startdir")]
   $sdir,
 
-  [alias("f")]
+  [alias("i")]
   [alias("interpreter")]
   $interpret,
+
+  [alias("f")]
+  [alias("script")]
+  [alias("scmd")]
+  [alias("file")]
+  $scriptfile,
 
   [alias("c")]
   [alias("command")]
@@ -18,8 +24,13 @@ if ($interpret) {
   exit
 }
 
+$script:shell_param_scriptfile = $scriptfile
 $old_windowtitle = $host.ui.rawui.windowtitle
+$script:shell_opt_windowtitle_current = $host.ui.rawui.windowtitle
+$script:shell_opt_windowtitle_original = $old_windowtitle
+$script:shell_opt_windowtitle_last = $host.ui.rawui.windowtitle
 if ($script:old_path) {} else {$script:old_path = $pwd}
+$script:crosshell_versionID = "0.0.1_dev-A01"
 $script:default_prefix = "> "
 $script:prefix_enabled = $true
 $script:prefixcolor = "darkgray"
@@ -127,7 +138,7 @@ function script:load-cmdlets {
   $script:pathables = $script:pathables | sort
 }
 
-function CheckAndRun-input {
+function script:CheckAndRun-input {
   param([string]$in)
   $inc = ""
   if ($script:debug_commandparts -eq $true) {write-host -nonewline "recived.alinput: " -f darkgray; write-host "$in" -b darkblue}
@@ -220,6 +231,33 @@ function forceExit {
   cd $curdir
 }
 
+function write-profile {
+  param([bool]$hasmorelines)
+  if (test-path "$psscriptroot\assets\profile.ps1") {
+    . "$psscriptroot\assets\profile.ps1"
+  } else {
+    if ($script:hostID -ne "pwsh.5l") {
+      write-message "OBS! No profile file, please add: ","/assets/profile.ps1" DarkYellow,Cyan
+    } else {
+      write-message "OBS! No profile file, please add: ","/assets/profile.ps1" Yellow,Cyan
+    }
+    if ($hasmorelines -ne $true) {
+      write-host ""
+    }
+  }
+}
+
+function logCommand {
+  param([string]$command,[switch]$doFormat)
+  if ($doFormat) {
+    [string]$datetag = "[" + $(get-date -format g) + "]  "
+    [string]$commandS = "$datetag $command"
+    $commandS | out-file -file "$psscriptroot\assets\inputs.log" -append
+  } else {
+    $command | out-file -file "$psscriptroot\assets\inputs.log" -append
+  }
+}
+
 if ($script:hasresetforceExit) {} else {forceExit -reset; $script:hasresetforceExit}
 
 function writeDirPrefix($dirp) {
@@ -237,30 +275,50 @@ function writeDirPrefix($dirp) {
 
 function write-header {
   cls
+  $hasmorelines = $false
+  #Hosts
   if ($script:hostID -eq "pwsh.5l") {
     write-message "Warning! Shell started with powershell 5. This app uses and is coded in powershell 7 so please use that or newer for full functionality. Altought some things may work in powershell 5 no support is given for it. For instructions se: ","https://docs.microsoft.com/en-us/powershell/scripting/install/installing-powershell-on-windows" White,Cyan DarkRed
+    $hasmorelines = $true
   }
   if ($script:hostID -eq "pwsh.6l") {
     write-message "Warning! Shell started with powershell 6. This app uses and is coded in powershell 7 so please update to that or newer for full functionality. Altought some things may work in powershell 6 no support is given for it. For instructions se: ","https://docs.microsoft.com/en-us/powershell/scripting/install/installing-powershell-on-windows" White,Cyan DarkRed
+    $hasmorelines = $true
   }
   if ($script:hostID -eq "vscodehost") {
-    if ($script:msgcentral_vscodenotice -ne $false) {write-message "OBS! Shell started with vscode, scaling and buffersaves may be broken. ","(To disable this message use: 'msgcentral -disable vscodenotice')" White,DarkGray Darkblue}
+    if ($script:msgcentral_vscodenotice -ne $false) {write-message "OBS! Shell started with vscode, scaling and buffersaves may be broken. ","(To disable this message use: 'msgcentral -disable vscodenotice')" White,DarkGray Darkblue; $hasmorelines = $true}
   }
   if ($script:hostID -eq "unknown") {
     write-message "Warning! Shell started with unknown powershell version and host. Compatability and featureset is not garanteed. Please use powershell 7." White DarkYellow
+    $hasmorelines = $true
   }
-  write-message "Welcome, write 'help' for help." green
+  #Version
+  if ($script:crosshell_versionID -like "*dev*") {
+    write-message "You are running a development version of crosshell, bugs may occure and some features migth be missing." DarkRed
+    $hasmorelines = $true
+  }
+  write-profile -hasmorelines $hasmorelines
+  if ($hasmorelines -eq "$true") {write-host ""}
+  write-message "Welcome, write 'help' for help. To add messages to here edit: /assets/profile.ps1" green
 }
 
 ##shell
-if ($pipedcommand) {load-cmdlets; CheckAndRun-input $pipedcommand;exit}
-$host.ui.rawui.windowtitle = "ShellTest 0.0.1"
+if ($pipedcommand) { load-cmdlets; CheckAndRun-input $pipedcommand; $host.ui.rawui.windowtitle = $old_windowtitle; cd $old_path; exit}
+if ($scriptfile) {[string]$cc = "script " + '"' + $scriptfile + '"'; load-cmdlets; CheckAndRun-input $cc; $host.ui.rawui.windowtitle = $old_windowtitle; cd $old_path; exit}
+#window title
+  $script:shell_opt_windowtitle_normal = "ShellTest 0.0.1"
+  $script:shell_opt_windowtitle_current = $script:shell_opt_windowtitle_normal
+  #load saved title
+  if (test-path "$script:basedir\assets\title.state") { $script:shell_opt_windowtitle_current = gc "$script:basedir\assets\title.state"}
+#loop
 $loop = $true
 if ($script:hostID -ne "pwsh.5l") {load-cmdlets}
 cd $startdir
 $prefix = $script:default_prefix
 write-header
 while ($loop) {
+  #windowtitle
+  $host.ui.rawui.windowtitle = $script:shell_opt_windowtitle_current
   forceExit -check
   $script:current_directory = $pwd
   if ($script:gobackcommand) {iex($script:gobackcommand); $script:gobackcommand = $null}
@@ -274,5 +332,8 @@ while ($loop) {
     forceExit -set
     exit
   }
-  if ($command -ne "") {CheckAndRun-input $command}
+  if ($command -ne "") {
+    logCommand -command $command -doFormat
+    CheckAndRun-input $command
+  }
 }

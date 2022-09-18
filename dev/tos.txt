@@ -1,0 +1,16 @@
+Settings:
+  Settings:
+   console.Settings
+   -lang auto.$PsCulture
+
+  Themes:
+    RichTheme:
+      console.Themes
+      -backgroundcolor
+      -foregroundcolor
+      -warncolor
+      -obscolor
+      -msgcolor
+      
+      host.ansiMapping
+      -$PSStyle
