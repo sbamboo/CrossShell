@@ -303,8 +303,7 @@ function write-header {
 }
 
 ##shell
-if ($pipedcommand) {
-  load-cmdlets; CheckAndRun-input $pipedcommand; $host.ui.rawui.windowtitle = $old_windowtitle; cd $old_path; exit}
+if ($pipedcommand) { load-cmdlets; CheckAndRun-input $pipedcommand; $host.ui.rawui.windowtitle = $old_windowtitle; cd $old_path; exit}
 if ($scriptfile) {[string]$cc = "script " + '"' + $scriptfile + '"'; load-cmdlets; CheckAndRun-input $cc; $host.ui.rawui.windowtitle = $old_windowtitle; cd $old_path; exit}
 #window title
   $script:shell_opt_windowtitle_normal = "ShellTest 0.0.1"
