@@ -216,8 +216,14 @@ function script:CheckAndRun-input {
     }
   }
   if ($cmdFound -ne $true) {
-    $errString = 'Cmdlet "' + $command + '", not found!'
-    write-host $errString -f red
+    #Cmdlet not found
+    if ("$command" -match '[a-zA-Z]') {
+      $errString = 'Cmdlet "' + $command + '", not found!'
+      write-host $errString -f red
+    #Numeral input
+    } else {
+      $inc = $command
+    }
   }
   if ($inc) {iex($inc)}
 }
