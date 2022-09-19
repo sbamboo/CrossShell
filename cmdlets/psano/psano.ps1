@@ -25,5 +25,5 @@ $NestedModules = @('.\1KeyEvents\1KeyHandle.ps1',
 
 foreach ($f in $nestedmodules) {. $f}
 $c = "Edit-TextFile " + $args
-iex($c)
+if ($c -notlike "*;*") {iex($c)}
 cd $old_path

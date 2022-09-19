@@ -11,5 +11,5 @@ function tree2 {
     [string]$argu += " -ext"
   }
   $command = "Show-Tree $argu"
-  iex($command)
+  if ($c -notlike "*;*") {iex($command)}
 }

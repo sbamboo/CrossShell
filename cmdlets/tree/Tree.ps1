@@ -8,4 +8,4 @@
 
 
 $c = "Show-Tree $args"
-iex($c)
+if ($c -notlike "*;*") {iex($c)}
