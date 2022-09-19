@@ -323,7 +323,7 @@ function write-header {
 if ($pipedcommand) { load-cmdlets; if ($script:shell_opt_multiline) {splitCommandAndRun $pipedcommand} else {CheckAndRun-input $pipedcommand}; $host.ui.rawui.windowtitle = $old_windowtitle; cd $old_path; if ($noexit) {pause} else {exit}}
 if ($scriptfile) {[string]$cc = "script " + '"' + $scriptfile + '"'; load-cmdlets; CheckAndRun-input $cc; $host.ui.rawui.windowtitle = $old_windowtitle; cd $old_path; if ($noexit) {pause} else {exit}}
 #window title
-  $script:shell_opt_windowtitle_normal = "ShellTest 0.0.1"
+  $script:shell_opt_windowtitle_normal = "Crosshell $script:crosshell_versionID"
   $script:shell_opt_windowtitle_current = $script:shell_opt_windowtitle_normal
   #load saved title
   if (test-path "$script:basedir\assets\title.state") { $script:shell_opt_windowtitle_current = gc "$script:basedir\assets\title.state"}
