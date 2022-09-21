@@ -49,9 +49,16 @@ Param(
     [switch]$license,
     [Alias("i")]
     [Alias("inf")]
-    [switch]$info
+    [switch]$info,
+
+    [string]$cliPassedPath
 
 )
+
+#cliPassedPath
+if ($cliPassedPath) {
+  cd $cliPassedPath
+}
 
 #BuiltIn Settings
   #Default Settings

@@ -54,5 +54,5 @@ Param(
 #start
 $cl = gl
 cd $PSScriptRoot\.fileman\
-.\Fileman.ps1 @PSBoundParameters
+.\Fileman.ps1 @PSBoundParameters -cliPassedPath "$pwd"
 cd $cl
