@@ -137,4 +137,4 @@ write-host ""
 write-host "(Use 'get-help <command>' for more info about that command, including the 'help' command.)" -f darkgreen
 write-host ""
 
-$script:pathables = $script:pathables_backup
+if ($searchterm) {$script:pathables = $script:pathables_backup}
