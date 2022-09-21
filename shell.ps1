@@ -77,7 +77,7 @@ if (test-path "$psscriptroot\assets") {} else {
 
 function check-latestversion{
   $script:verctrl_lastver_online = curl -s 'https://raw.githubusercontent.com/simonkalmiclaesson/CrossShell/main/lastver.mt'
-  $script:verctrl_lastver_current = "$basedir\lastver.mt"
+  $script:verctrl_lastver_current = gc "$basedir\lastver.mt"
   if ($script:verctrl_lastver_online -ne "") {
     if ($script:verctrl_lastver_current -ne $script:verctrl_lastver_online) {
       $script:verctrl_lastver_matching = $false
@@ -338,7 +338,8 @@ function write-header {
     $hasmorelines = $true
   }
   if ($script:verctrl_lastver_matching -eq $false) {
-    write-message "You are not running the latest version, consider git cloning..." darkred
+    echo "`e[5;31mYou are not running the latest version, consider git cloning...`e[0m"
+    #write-message "You are not running the latest version, consider git cloning..." darkred
     $hasmorelines = $true
   }
   write-profile -hasmorelines $hasmorelines
