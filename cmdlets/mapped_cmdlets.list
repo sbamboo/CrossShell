@@ -21,6 +21,4 @@ convertTo-json
 convertTo-html
 ren
 notepad
-pwsh
-powershell
 winget

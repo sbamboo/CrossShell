@@ -51,5 +51,8 @@ Param(
     [switch]$info
 
 )
-
-. "$PSScriptRoot\.fileman\Fileman.ps1" @PSBoundParameters
+#start
+$cl = gl
+cd $PSScriptRoot\.fileman\
+.\Fileman.ps1 @PSBoundParameters
+cd $cl

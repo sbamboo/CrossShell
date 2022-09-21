@@ -89,10 +89,13 @@ Param(
 
 #Internal
 $fm_author = "Simon Kalmi Claesson"
-$fm_version = "3.0_beta5"
+$fm_version = "3.0_beta6"
 $fm_description = "Fileman is a simple file manager written in Powershell"
 
 #HandleParam
+
+#buffer -save
+
 #base
 if ($mode -eq "simple") {$mode = "$true"} else {$mode = "$false"}
 #cliusage
@@ -153,7 +156,7 @@ while ($MainLoop -eq "$true") {
       ReloadConsoleTheme
       #saveDir
       $fm_state_lastdir = $pwd
-    cls
+    if (!$cli_cmdpass) {cls}
     $cfgCmd = "$setpref" + "opt"
     $hlpCmd = "$setpref" + "help"
     $infCmd = "$setpref" + "info"
@@ -672,4 +675,5 @@ while ($MainLoop -eq "$true") {
 #Post exit commands
 cls
 if ($fm_savelastDir -eq "True") {LastDir save "$fm_state_lastdir"}
+#buffer -load
 cd $fm_startpath

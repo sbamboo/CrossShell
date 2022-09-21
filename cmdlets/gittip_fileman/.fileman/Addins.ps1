@@ -11,6 +11,24 @@ function g-cp {
     cd $script:curpath
 }
 
+#bufferScript by Simon Kalmi Claesson for crosshell, used here for buffer save functionality
+function buffer {
+  param([switch]$save,[switch]$load)
+  if ($save) {
+    $w = $host.ui.rawui.buffersize.width
+    $h = $host.ui.rawui.buffersize.height
+    $Source = New-Object System.Management.Automation.Host.Rectangle 0, 0, $w, $h
+    $script:fman_ScreenBuffer = $host.UI.RawUI.GetBufferContents($Source)
+  } elseif ($load) {
+    $w = $host.ui.rawui.buffersize.width
+    $h = $host.ui.rawui.buffersize.height
+    $Source = New-Object System.Management.Automation.Host.Rectangle 0, 0, $w, $h
+    $host.UI.RawUI.SetBufferContents((New-Object System.Management.Automation.Host.Coordinates $Source.Left, $Source.Top), $script:fman_ScreenBuffer)
+    $c = 'echo "`e[' + ($h-4) + 'B"'
+    iex($c)
+  }
+}
+
 
 #Contains
 function Contains($i,$c,$o) {

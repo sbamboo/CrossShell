@@ -2,8 +2,33 @@
   .SYNOPSIS
   Shows this help menu.
 #>
-param([alias("o")][switch]$online,[alias("s")][switch]$spaced,[alias("n","num","numeral","numerals","numbers","shownumbers")][switch]$shownumerals,[alias("m")][switch]$more)
+
+# Params
+param(
+  [alias("o")]
+  [switch]$online,
+
+  [alias("s")]
+  [switch]$spaced,
+  
+  [alias("n","num","numeral","numerals","numbers","shownumbers")]
+  [switch]$shownumerals,
+  
+  [alias("m")]
+  [switch]$more,
+
+  [Parameter(ValueFromPipeline=$true)]
+  [alias("se","search")]
+  [string]$searchterm
+)
+
+# Code
 if ($online) {$help_mappedCmdlets_getonline = $true} else {$help_mappedCmdlets_getonline = $false}
+
+if ($searchterm) {
+  $script:pathables_backup = $script:pathables
+  $script:pathables = $script:pathables | Where-Object -FilterScript { $_ -like "$searchterm" }
+}
 
 function GetLongest {
   [int]$longest = 0
@@ -17,7 +42,7 @@ function GetLongest {
 [int]$longest = GetLongest
 
 write-host ""
-write-host -nonewline "     Commands in shell:" -f darkgreen
+if ($searchterm) {write-host -nonewline "      Command matches:" -f darkgreen} else {write-host -nonewline "     Commands in shell:" -f darkgreen}
 $l = $script:pathables.length; write-host " $l command(s)" -f darkgray
 write-host "==========================================" -f darkgreen
 $counter = 0
@@ -111,3 +136,5 @@ foreach ($c in $script:pathables) {
 write-host ""
 write-host "(Use 'get-help <command>' for more info about that command, including the 'help' command.)" -f darkgreen
 write-host ""
+
+$script:pathables = $script:pathables_backup
