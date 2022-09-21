@@ -29,6 +29,9 @@ if ($interpret) {
   exit
 }
 
+#Version control
+$script:crosshell_versionID = "0.0.1_dev-A01"
+
 $script:shell_opt_multiline = $false
 
 $script:shell_param_printcomments = $printcomments
@@ -39,7 +42,6 @@ $script:shell_opt_windowtitle_current = $host.ui.rawui.windowtitle
 $script:shell_opt_windowtitle_original = $old_windowtitle
 $script:shell_opt_windowtitle_last = $host.ui.rawui.windowtitle
 if ($script:old_path) {} else {$script:old_path = $pwd}
-$script:crosshell_versionID = "0.0.1_dev-A01"
 $script:default_prefix = "> "
 $script:prefix_enabled = $true
 $script:prefixcolor = "darkgray"
@@ -72,6 +74,21 @@ if ($inthostVersionMajor -eq "7") {
 if (test-path "$psscriptroot\assets") {} else {
   mkdir "$psscriptroot\assets"
 }
+
+function check-latestversion{
+  $script:verctrl_lastver_online = curl -s 'https://raw.githubusercontent.com/simonkalmiclaesson/CrossShell/main/lastver.mt'
+  $script:verctrl_lastver_current = "$basedir\lastver.mt"
+  if ($script:verctrl_lastver_online -ne "") {
+    if ($script:verctrl_lastver_current -ne $script:verctrl_lastver_online) {
+      $script:verctrl_lastver_matching = $false
+    } else {
+      $script:verctrl_lastver_matching = $true
+    }
+  } else {
+    $script:verctrl_lastver_matching = "Nan (no-internet)"
+  }
+}
+check-latestversion
 
 function script:write-message{
   #Usage:   write-message <text-array> <foregroundcolor-array> <backgroundcolor-array>
@@ -318,6 +335,10 @@ function write-header {
   #Version
   if ($script:crosshell_versionID -like "*dev*") {
     write-message "You are running a development version of crosshell, bugs may occure and some features migth be missing." DarkRed
+    $hasmorelines = $true
+  }
+  if ($script:verctrl_lastver_matching -eq $false) {
+    write-message "You are not running the latest version, consider git cloning..." darkred
     $hasmorelines = $true
   }
   write-profile -hasmorelines $hasmorelines
