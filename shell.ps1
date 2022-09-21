@@ -87,6 +87,11 @@ function check-latestversion{
   } else {
     $script:verctrl_lastver_matching = "Nan (no-internet)"
   }
+  if ($script:debug_versioncheck) {
+    write-host -nonewline "lastver.online: " -f darkgray; write-host -nonewline "$script:verctrl_lastver_online`n" -f green
+    write-host -nonewline "lastver.current: " -f darkgray; write-host -nonewline "$script:verctrl_lastver_current`n" -f green
+    write-host -nonewline "lastver.matching: " -f darkgray; write-host -nonewline "$script:verctrl_lastver_matching`n" -f green
+  }
 }
 check-latestversion
 
