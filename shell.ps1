@@ -21,7 +21,11 @@ param(
   [alias("nexit")]
   [switch]$noexit,
 
-  [switch]$printcomments
+  [switch]$printcomments,
+
+  [switch]$supressCls,
+
+  [switch]$noheader
 )
 
 if ($interpret) {
@@ -48,6 +52,10 @@ $script:prefixcolor = "darkgray"
 $script:prefixdircolor = "darkgray"
 $script:prefix_dir = $true
 $script:basedir = $psscriptroot
+$script:shell_suppress_menu_cls = $false
+if ($supressCls) {
+  $script:shell_suppress_menu_cls = $true
+}
 if ($script:startdir) {} else {$script:startdir = $pwd}
 if ($sdir) {$startdir = $sdir}
 
@@ -75,6 +83,61 @@ if (test-path "$psscriptroot\assets") {} else {
   mkdir "$psscriptroot\assets"
 }
 
+
+function script:logCommand {
+  param([string]$command,[switch]$doFormat)
+  if ($doFormat) {
+    [string]$datetag = "[" + $(get-date -format g) + "]  "
+    [string]$commandS = "$datetag $command"
+    $commandS | out-file -file "$psscriptroot\assets\inputs.log" -append
+  } else {
+    $command | out-file -file "$psscriptroot\assets\inputs.log" -append
+  }
+}
+
+#autoLoadStates
+function script:LoadStatesFromAssets {
+  $cp = gl
+  $di = "$basedir\assets\states\"
+  if (test-path "$di") {
+      cd $di
+      $files = ls -recurse
+      foreach ($statefile in $files) {
+          if ($statefile.mode -eq "-a---") {
+              $name = ($statefile.name | split-path -leafbase)
+              $value = gc "$statefile"
+              Set-variable -name "$name" -value $value -scope Script
+              #write-host "$name $value $((Get-Variable $name).value)"
+          }
+      }
+  }
+  cd $cp
+}
+LoadStatesFromAssets
+
+function script:saveState($variable,$value,$folder,$reset) {
+  $cp = gl
+  cd $basedir\assets
+  if (test-path "states") {} else {
+    mkdir states | out-null
+  }
+  cd states
+  if (test-path "$folder") {} else {
+    mkdir $folder | out-null
+  }
+  cd $folder
+  if ($reset -eq $true) {
+    $value = $false
+    del "$variable.state"
+  } else {
+    set-variable -name $variable -value $value -scope Script
+    $state = (get-variable -name $variable -scope Script).value
+    $state | out-file "$variable.state"
+  }
+  logCommand -command "[saveState >> Set $variable to $value]" -doFormat
+  cd $cp
+}
+
 function check-latestversion{
   $script:verctrl_lastver_online = curl -s 'https://raw.githubusercontent.com/simonkalmiclaesson/CrossShell/main/lastver.mt'
   $script:verctrl_lastver_current = gc "$basedir\lastver.mt"
@@ -87,10 +150,12 @@ function check-latestversion{
   } else {
     $script:verctrl_lastver_matching = "Nan (no-internet)"
   }
-  if ($script:debug_versioncheck) {
+  if ($script:debug_versioncheck -eq $true) {
+    if ($script:shell_suppress_menu_cls -eq $true) {} else {cls}
     write-host -nonewline "lastver.online: " -f darkgray; write-host -nonewline "$script:verctrl_lastver_online`n" -f green
     write-host -nonewline "lastver.current: " -f darkgray; write-host -nonewline "$script:verctrl_lastver_current`n" -f green
     write-host -nonewline "lastver.matching: " -f darkgray; write-host -nonewline "$script:verctrl_lastver_matching`n" -f green
+    $script:shell_suppress_menu_cls = $true
   }
 }
 check-latestversion
@@ -292,17 +357,6 @@ function write-profile {
   }
 }
 
-function logCommand {
-  param([string]$command,[switch]$doFormat)
-  if ($doFormat) {
-    [string]$datetag = "[" + $(get-date -format g) + "]  "
-    [string]$commandS = "$datetag $command"
-    $commandS | out-file -file "$psscriptroot\assets\inputs.log" -append
-  } else {
-    $command | out-file -file "$psscriptroot\assets\inputs.log" -append
-  }
-}
-
 if ($script:hasresetforceExit) {} else {forceExit -reset; $script:hasresetforceExit}
 
 function writeDirPrefix($dirp) {
@@ -318,8 +372,8 @@ function writeDirPrefix($dirp) {
   }
 }
 
-function write-header {
-  cls
+function write-header($nocls) {
+  if ($nocls -ne $true) {if ($script:shell_suppress_menu_cls -eq $true) {$script:shell_suppress_menu_cls = $false} else {cls}}
   $hasmorelines = $false
   #Hosts
   if ($script:hostID -eq "pwsh.5l") {
@@ -339,13 +393,17 @@ function write-header {
   }
   #Version
   if ($script:crosshell_versionID -like "*dev*") {
-    write-message "You are running a development version of crosshell, bugs may occure and some features migth be missing." DarkRed
-    $hasmorelines = $true
+    if ($script:msgcentral_devversion -ne $false) {
+      write-message "You are running a development version of crosshell, bugs may occure and some features migth be missing." DarkRed
+      $hasmorelines = $true
+    }
   }
   if ($script:verctrl_lastver_matching -eq $false) {
-    echo "`e[5;31mYou are not running the latest version, consider git cloning...`e[0m"
-    #write-message "You are not running the latest version, consider git cloning..." darkred
-    $hasmorelines = $true
+    if ($script:msgcentral_notlatestversion -ne $false) {
+      echo "`e[5;31mYou are not running the latest version, consider git cloning...`e[0m"
+      #write-message "You are not running the latest version, consider git cloning..." darkred
+      $hasmorelines = $true
+    }
   }
   write-profile -hasmorelines $hasmorelines
   if ($hasmorelines -eq "$true") {write-host ""}
@@ -365,7 +423,7 @@ $loop = $true
 if ($script:hostID -ne "pwsh.5l") {load-cmdlets}
 cd $startdir
 $prefix = $script:default_prefix
-write-header
+if ($noheader) {if ($script:shell_suppress_menu_cls -ne $true) {cls}} else {write-header}
 while ($loop) {
   #windowtitle
   $host.ui.rawui.windowtitle = $script:shell_opt_windowtitle_current

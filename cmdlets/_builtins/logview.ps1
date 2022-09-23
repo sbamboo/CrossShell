@@ -32,6 +32,8 @@ function printFormatedLog {
                 write-host -nonewline "   "
                 if ($cmdo[0] -eq "#") {
                     write-host -nonewline "$cmdo" -f $cmntColor[0] -b $cmntColor[1]
+                } elseif ($cmdo -like "*saveState >>*") {
+                    write-host -nonewline "$cmdo" -f $cmntColor[0] -b $cmntColor[1]
                 } else {
                     write-host -nonewline "$cmdo" -f $cmdoColor[0] -b $cmdoColor[1]
                 }

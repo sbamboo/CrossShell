@@ -2,12 +2,24 @@
   .SYNOPSIS
   Reloads the shell.
 #>
-param([alias("f")][switch]$full)
+param([alias("f")][switch]$full,[switch]$nocls,[switch]$noheader)
 
 if ($full) {
   cd $psscriptroot
   cd ..\..\..
-  .\shell.ps1 -sdir $script:current_directory
+  if ($noheader) {
+    if ($nocls) {
+      .\shell.ps1 -sdir $script:current_directory -supressCls -noheader
+    } else {
+      .\shell.ps1 -sdir $script:current_directory -noheader
+    }
+  } else {
+    if ($nocls) {
+      .\shell.ps1 -sdir $script:current_directory -supressCls 
+    } else {
+      .\shell.ps1 -sdir $script:current_directory
+    }
+  }
 } else {
   load-cmdlets
   $script:gobackcommand = "cd $script:current_directory"
