@@ -235,7 +235,8 @@ function script:load-cmdlets {
 }
 
 function script:CheckAndRun-input {
-  param([string]$in)
+  param([string]$in,[switch]$return,[switch]$returnFormated,[switch]$noerror)
+  $orginput = $in
   $inc = ""
   if ($script:debug_commandparts -eq $true) {write-host -nonewline "recived.alinput: " -f darkgray; write-host "$in" -b darkblue}
   $ch = " | "
@@ -306,13 +307,19 @@ function script:CheckAndRun-input {
     #Cmdlet not found
     if ("$command" -match '[a-zA-Z]') {
       $errString = 'Cmdlet "' + $command + '", not found!'
-      write-host $errString -f red
+      if (!$noerror) {
+        write-host $errString -f red
+      }
+      if ($returnFormated) {
+        $orginput += " #!!invalidExec"
+      }
     #Numeral input
     } else {
       $inc = $command
     }
   }
   if ($inc) {iex($inc)}
+  if ($return -or $returnFormated) {return "$orginput"}
 }
 
 function splitCommandAndRun {
@@ -343,7 +350,10 @@ function forceExit {
 
 function write-profile {
   param([bool]$hasmorelines)
-  if (test-path "$psscriptroot\assets\profile.ps1") {
+  if (test-path "$psscriptroot\assets\profile.crcmd") {
+    [string]$cdm = "script " + '"' + "$psscriptroot\assets\profile.crcmd" + '"'
+    CheckAndRun-input $cdm
+  } elseif (test-path "$psscriptroot\assets\profile.ps1") {
     . "$psscriptroot\assets\profile.ps1"
   } else {
     if ($script:hostID -ne "pwsh.5l") {
