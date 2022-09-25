@@ -204,7 +204,7 @@ function script:write-message{
 
 function script:load-cmdlets {
   $script:pathables = $null
-  cd $psscriptroot\cmdlets
+  cd $psscriptroot\packages\cmdlet
   $files = get-childitem -recurse
 
   foreach ($file in $files) {
