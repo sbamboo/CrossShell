@@ -1,0 +1,22 @@
+{"packagehand_repo":[
+  {"vTag":"test_a1.0"},
+
+  {"test-cmdlet":[
+    {"latest":{
+      "type":        "cmdlet",
+      "sourcetype":  "local",
+      "source":      "./repo/test-cmdlet_latest.package",
+      "format":      "zip",
+      "target":      "global",
+      "version":     "1.0"
+    }},
+    {"LTS":{
+      "type":        "cmdlet",
+      "sourcetype":  "local",
+      "source":      "./repo/test-cmdlet_lts.package",
+      "format":      "zip",
+      "target":      "global",
+      "version":     "0.9"
+    }}
+  ]}
+]}
