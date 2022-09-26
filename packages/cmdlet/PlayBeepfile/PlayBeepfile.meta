@@ -1,0 +1,10 @@
+{
+  "type": "cmdlet",
+  "target": "global",
+  "sourceType": "web",
+  "version": "1.0",
+  "source": "https://github.com/simonkalmiclaesson/packagehand_repository/raw/main/repository/cmdlet/PlayBeepfile/PlayBeepfile_latest_global.package",
+  "Description": "Cmdlet for playing BeepFiles.",
+  "versionTag": "latest",
+  "format": "zip"
+}

@@ -1,0 +1,10 @@
+{
+  "type": "cmdlet",
+  "target": "global",
+  "sourceType": "web",
+  "version": "1.0",
+  "source": "https://github.com/simonkalmiclaesson/packagehand_repository/raw/main/repository/cmdlet/_builtins/crosshell_title/crosshell_title_latest_global.package",
+  "Description": "Cmdlets to handle the console title.",
+  "versionTag": "latest",
+  "format": "zip"
+}

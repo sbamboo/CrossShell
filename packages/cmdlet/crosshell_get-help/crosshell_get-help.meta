@@ -1,0 +1,10 @@
+{
+  "type": "cmdlet",
+  "target": "global",
+  "sourceType": "web",
+  "version": "1.0",
+  "source": "https://github.com/simonkalmiclaesson/packagehand_repository/raw/main/repository/cmdlet/_builtins/crosshell_get-help/crosshell_get-help_latest_global.package",
+  "Description": "Contains cdmlets for showing help. And to show more information about commands.",
+  "versionTag": "latest",
+  "format": "zip"
+}

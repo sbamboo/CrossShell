@@ -1,0 +1,10 @@
+{
+  "type": "cmdlet",
+  "target": "global",
+  "sourceType": "web",
+  "version": "1.0",
+  "source": "https://github.com/simonkalmiclaesson/packagehand_repository/raw/main/repository/cmdlet/WifiFinder/WifiFinder_latest_global.package",
+  "Description": "Cmdlet for showing wifi passwords.",
+  "versionTag": "latest",
+  "format": "zip"
+}

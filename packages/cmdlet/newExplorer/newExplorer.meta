@@ -1,0 +1,10 @@
+{
+  "type": "cmdlet",
+  "target": "win",
+  "sourceType": "web",
+  "version": "1.0",
+  "source": "https://github.com/simonkalmiclaesson/packagehand_repository/raw/main/repository/cmdlet/newExplorer/newExplorer_latest_win.package",
+  "Description": "Starts the hidden new explorer in windows.",
+  "versionTag": "latest",
+  "format": "zip"
+}

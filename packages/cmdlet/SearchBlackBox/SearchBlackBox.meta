@@ -1,0 +1,10 @@
+{
+  "type": "cmdlet",
+  "target": "global",
+  "sourceType": "web",
+  "version": "1.0",
+  "source": "https://github.com/simonkalmiclaesson/packagehand_repository/raw/main/repository/cmdlet/SearchBlackBox/SearchBlackBox_latest_global.package",
+  "Description": "An unofficial tool to search for code on useblackbox.io.",
+  "versionTag": "latest",
+  "format": "zip"
+}

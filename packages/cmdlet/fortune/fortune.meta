@@ -1,0 +1,10 @@
+{
+  "type": "cmdlet",
+  "target": "global",
+  "sourceType": "web",
+  "version": "1.0",
+  "source": "https://github.com/simonkalmiclaesson/packagehand_repository/raw/main/repository/cmdlet/_thirdpartyimports/fortune/fortune_latest_global.package",
+  "Description": "Fortune for Windows Powershell.",
+  "versionTag": "latest",
+  "format": "zip"
+}

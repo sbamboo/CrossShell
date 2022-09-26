@@ -1,0 +1,10 @@
+{
+  "type": "cmdlet",
+  "target": "global",
+  "sourceType": "web",
+  "version": "1.0",
+  "source": "https://github.com/simonkalmiclaesson/packagehand_repository/raw/main/repository/cmdlet/_builtins/crosshell_logview/crosshell_logview_latest_global.package",
+  "Description": "Contains cmdlets for viewing and managing log files.",
+  "versionTag": "latest",
+  "format": "zip"
+}

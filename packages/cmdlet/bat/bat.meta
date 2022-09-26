@@ -1,0 +1,10 @@
+{
+  "type": "cmdlet",
+  "target": "win",
+  "sourceType": "web",
+  "version": "1.0",
+  "source": "https://github.com/simonkalmiclaesson/packagehand_repository/raw/main/repository/cmdlet/_thirdpartyimports/bat/bat_latest_win.package",
+  "Description": "A cat(1) clone with syntax highlighting and Git integration.",
+  "versionTag": "latest",
+  "format": "zip"
+}
