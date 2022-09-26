@@ -36,13 +36,15 @@ param(
   [switch]$force,
   [switch]$meta,
   [switch]$all,
+  [alias("ar","reload")]
+  [switch]$autoreload,
 
   [alias("s")]
   [string]$search
 )
 
 # Get repo
-$repo_raw = gc "C:\Users\simonkalmi.claesson\Documents\Github\packagehand_repository\repo.json"
+$repo_raw = (iwr -uri "https://raw.githubusercontent.com/simonkalmiclaesson/packagehand_repository/main/repo.json").content
 $repo_data = ConvertFrom-Json "$repo_raw"
 
 #get os
@@ -181,6 +183,11 @@ if ($install) {
   } else {
     write-host "Installation of package: $script:package_name failed... Please try again." -f Red
   }
+  #reload
+  if ($autoreload) {
+    load-cmdlets
+    $script:gobackcommand = "cd $script:current_directory"
+  }
 }
 
 # Uninstall
@@ -211,6 +218,11 @@ if ($uninstall) {
     write-host "Uninstallation of package: $script:package_name failed... Please try again or manualy remove the folder at $script:package_final" -f Red
   } else {
     write-host "Uninstalled package: $script:package_name" -f darkred
+  }
+  #reload
+  if ($autoreload) {
+    load-cmdlets
+    $script:gobackcommand = "cd $script:current_directory"
   }
 }
 
@@ -274,6 +286,11 @@ if ($update) {
     
   } else {
     write-host "Packagehand is in development, currently to update the best way is to just run -install over the current install" -f gray
+  }
+  #reload
+  if ($autoreload) {
+    load-cmdlets
+    $script:gobackcommand = "cd $script:current_directory"
   }
 }
 
