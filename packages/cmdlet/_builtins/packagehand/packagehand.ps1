@@ -42,7 +42,7 @@ param(
 )
 
 # Get repo
-$repo_raw = gc "C:\Users\simon\Documents\GitHub\packagehand_repository\repo.json"
+$repo_raw = gc "C:\Users\simonkalmi.claesson\Documents\Github\packagehand_repository\repo.json"
 $repo_data = ConvertFrom-Json "$repo_raw"
 
 #get os

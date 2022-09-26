@@ -5,8 +5,7 @@
 param([alias("f")][switch]$full,[switch]$nocls,[switch]$noheader)
 
 if ($full) {
-  cd $psscriptroot
-  cd ..\..\..
+  cd $script:basedir
   if ($noheader) {
     if ($nocls) {
       .\shell.ps1 -sdir $script:current_directory -supressCls -noheader
