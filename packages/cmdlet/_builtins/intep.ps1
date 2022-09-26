@@ -24,10 +24,10 @@ if ($pwsh) {$reader = "pwsh"
 } elseif ($node) {$reader = "node"
 }
 if ($file) {
-  . "$psscriptroot\..\..\readers\readFile" -file $file -reader $reader| iex
+  . "$script:basedir\readers\readFile" -file $file -reader $reader| iex
 } else {
   if ($icommand) {
-    . "$psscriptroot\..\..\readers\readFile" -cmd "$icommand" -reader $reader | iex
+    . "$script:basedir\readers\readFile" -cmd "$icommand" -reader $reader | iex
   } else {
     if ($reader) {} else {write-host -nonewline "Readertype: "; $reader = read-host}
     cls
@@ -37,7 +37,7 @@ if ($file) {
     $loop = $true
     while ($loop) {
       $icommand = read-host
-      if ($icommand -eq "-exit") {exit} elseif ($icommand -eq "-reader") {write-host -nonewline "Readertype: "; $reader = read-host} else {. "$psscriptroot\..\..\readers\readFile" -cmd $icommand -reader $reader | iex}
+      if ($icommand -eq "-exit") {exit} elseif ($icommand -eq "-reader") {write-host -nonewline "Readertype: "; $reader = read-host} else {. "$script:basedir\readers\readFile" -cmd $icommand -reader $reader | iex}
     }
   }
 }
