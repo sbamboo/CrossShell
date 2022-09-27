@@ -1,0 +1,10 @@
+{
+  "version": "1.0",
+  "Description": "Pong!",
+  "versionTag": "latest",
+  "target": "global",
+  "format": "zip",
+  "source": "https://github.com/simonkalmiclaesson/packagehand_repository/raw/main/repository/cmdlet/_builtins/crosshell_ping/crosshell_ping_latest_global.package",
+  "type": "cmdlet",
+  "sourceType": "web"
+}
