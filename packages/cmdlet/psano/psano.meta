@@ -1,0 +1,21 @@
+{
+<<<<<<< Updated upstream
+  "format": "zip",
+  "type": "cmdlet",
+  "source": "https://github.com/simonkalmiclaesson/packagehand_repository/raw/main/repository/cmdlet/_thirdpartyimports/psano/psano_latest_global.package",
+  "version": "1.0",
+  "sourceType": "web",
+  "versionTag": "latest",
+  "target": "global",
+  "Description": "Text Editor a bit like nano, written in pure powershell."
+=======
+  "target": "global",
+  "version": "1.0",
+  "format": "zip",
+  "versionTag": "latest",
+  "Description": "Text Editor a bit like nano, written in pure powershell.",
+  "sourceType": "web",
+  "type": "cmdlet",
+  "source": "https://github.com/simonkalmiclaesson/packagehand_repository/raw/main/repository/cmdlet/_thirdpartyimports/psano/psano_latest_global.package"
+>>>>>>> Stashed changes
+}

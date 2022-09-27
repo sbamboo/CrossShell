@@ -1,0 +1,21 @@
+{
+<<<<<<< Updated upstream
+  "format": "zip",
+  "type": "cmdlet",
+  "source": "https://github.com/simonkalmiclaesson/packagehand_repository/raw/main/repository/cmdlet/_builtins/crosshell_sys/crosshell_sys_latest_win.package",
+  "version": "1.0",
+  "sourceType": "web",
+  "versionTag": "latest",
+  "target": "global",
+  "Description": "Contains system managing cmdlets."
+=======
+  "target": "global",
+  "version": "1.0",
+  "format": "zip",
+  "versionTag": "latest",
+  "Description": "Contains system managing cmdlets.",
+  "sourceType": "web",
+  "type": "cmdlet",
+  "source": "https://github.com/simonkalmiclaesson/packagehand_repository/raw/main/repository/cmdlet/_builtins/crosshell_sys/crosshell_sys_latest_win.package"
+>>>>>>> Stashed changes
+}

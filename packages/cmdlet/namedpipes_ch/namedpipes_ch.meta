@@ -1,0 +1,21 @@
+{
+<<<<<<< Updated upstream
+  "format": "zip",
+  "type": "cmdlet",
+  "source": "https://github.com/simonkalmiclaesson/packagehand_repository/raw/main/repository/cmdlet/namedpipes_ch/namedpipes_ch_latest_global.package",
+  "version": "1.0",
+  "sourceType": "web",
+  "versionTag": "latest",
+  "target": "global",
+  "Description": "Contains cmdlet for using the namedpipes sytem."
+=======
+  "target": "global",
+  "version": "1.0",
+  "format": "zip",
+  "versionTag": "latest",
+  "Description": "Contains cmdlet for using the namedpipes sytem.",
+  "sourceType": "web",
+  "type": "cmdlet",
+  "source": "https://github.com/simonkalmiclaesson/packagehand_repository/raw/main/repository/cmdlet/namedpipes_ch/namedpipes_ch_latest_global.package"
+>>>>>>> Stashed changes
+}

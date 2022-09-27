@@ -1,0 +1,21 @@
+{
+<<<<<<< Updated upstream
+  "format": "zip",
+  "type": "cmdlet",
+  "source": "https://github.com/simonkalmiclaesson/packagehand_repository/raw/main/repository/cmdlet/Applinks/Applinks_latest_global.package",
+  "version": "1.0",
+  "sourceType": "web",
+  "versionTag": "latest",
+  "target": "global",
+  "Description": "Contains cmdlets shortcuts for apps."
+=======
+  "target": "global",
+  "version": "1.0",
+  "format": "zip",
+  "versionTag": "latest",
+  "Description": "Contains cmdlets shortcuts for apps.",
+  "sourceType": "web",
+  "type": "cmdlet",
+  "source": "https://github.com/simonkalmiclaesson/packagehand_repository/raw/main/repository/cmdlet/Applinks/Applinks_latest_global.package"
+>>>>>>> Stashed changes
+}

@@ -1,0 +1,21 @@
+{
+<<<<<<< Updated upstream
+  "format": "zip",
+  "type": "cmdlet",
+  "source": "https://github.com/simonkalmiclaesson/packagehand_repository/raw/main/repository/cmdlet/_thirdpartyimports/bottom/bottom_latest_win.package",
+  "version": "1.0",
+  "sourceType": "web",
+  "versionTag": "latest",
+  "target": "win",
+  "Description": "A customizable cross-platform graphical process/system monitor for the terminal."
+=======
+  "target": "win",
+  "version": "1.0",
+  "format": "zip",
+  "versionTag": "latest",
+  "Description": "A customizable cross-platform graphical process/system monitor for the terminal.",
+  "sourceType": "web",
+  "type": "cmdlet",
+  "source": "https://github.com/simonkalmiclaesson/packagehand_repository/raw/main/repository/cmdlet/_thirdpartyimports/bottom/bottom_latest_win.package"
+>>>>>>> Stashed changes
+}
