@@ -1,2 +1,0 @@
-# regexp to find .cow characters that need fixing
-((?<!`)`(?![`$@]))|(\\\\)|(\\@)|(\\\$)

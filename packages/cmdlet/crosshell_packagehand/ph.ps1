@@ -39,10 +39,13 @@ param(
   [alias("ar","reload")]
   [switch]$autoreload,
   [switch]$showiwrprogress,
+  [switch]$shownonmetas,
+  [alias("grepo","repo","rrepo")]
+  [switch]$reloadrepo,
+  [alias("o")]
+  [switch]$overlap,
 
   [alias("s")]
   [string]$search
 )
-
-
 . "$psscriptroot\packagehand.ps1" @PSBoundParameters

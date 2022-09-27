@@ -39,6 +39,11 @@ param(
   [alias("ar","reload")]
   [switch]$autoreload,
   [switch]$showiwrprogress,
+  [switch]$shownonmetas,
+  [alias("grepo","repo","rrepo")]
+  [switch]$reloadrepo,
+  [alias("o")]
+  [switch]$overlap,
 
   [alias("s")]
   [string]$search
@@ -70,6 +75,12 @@ function Create-PackageMeta {
   $packagemeta += @{"target"=$script:package_target}
   $packagemeta += @{"version"=$script:package_version}
   ConvertTo-Json $packagemeta | out-file "$package_name.meta"
+}
+
+#function to check meta existance
+function hasMeta($name) {
+  $dir = "$script:basedir\packages\cmdlet\$name\$name.meta"
+  return test-path "$dir"
 }
 
 # check package
@@ -127,17 +138,22 @@ if (!$showiwrprogress) {$progressPreference = "SilentlyContinue"}
 if ($install) {
   # all check
   if ($all) {
-    foreach ($pack in $repo_data.packagehand_repo) {
+    $packs = $repo_data.packagehand_repo
+    foreach ($pack in $packs) {
       if ("$pack" -ne "") {
         $pack = ($pack -split "=")[0]
         $pack = $pack -replace '@|{|}|=',""
         if ($pack -ne "vTag") {
-          if ($force) {
-            CheckAndRun-input "packagehand -install $pack"
-          } else {
-            CheckAndRun-input "packagehand -install $pack"
+          $allowedinstall = $true
+          if (!$overlap) {if (hasMeta $pack) {$allowedinstall = $false}}
+          if ($allowedinstall -eq $true) {
+            if ($force) {
+              CheckAndRun-input "packagehand -install $pack"
+            } else {
+              CheckAndRun-input "packagehand -install $pack"
+            }
+            $progressPreference = $old_progressPreference
           }
-          $progressPreference = $old_progressPreference
         }
       }
     }
@@ -163,6 +179,7 @@ if ($install) {
           cd "$package_final"
           if (test-path "$package") {} else {mkdir $package_name | out-null}
           if ($script:package_format -eq "zip") {
+            write-host "Copying '$package_source'..." -f yellow
             copy "$psscriptroot\$package_source" "$package_final\$package_name\$package_name.zip"
             cd "$package_final\$package_name"
             Expand-Archive "$package_name.zip" "$package_final\$package_name"-force
@@ -184,6 +201,7 @@ if ($install) {
           cd "$package_final"
           if (test-path "$package") {} else {mkdir $package_name | out-null}
           if ($script:package_format -eq "zip") {
+            write-host "Downloading $package_source..." -f yellow
             iwr -uri "$package_source" -outfile "$package_final\$package_name\$package_name.zip"
             cd "$package_final\$package_name"
             Expand-Archive "$package_name.zip" "$package_final\$package_name"-force
@@ -283,7 +301,11 @@ if ($update) {
         $name = ("$pack" -split '\\|\/')[-1]
         [string]$dir = "$pack"
         [string]$pa = "$dir" + "\" + "$name" + ".meta"
-        if (test-path $pa) {
+        if (!$overlap) {
+          if (test-path $pa) {
+            [array]$localPackages += "$dir"
+          }
+        } else {
           [array]$localPackages += "$dir"
         }
       }
@@ -453,9 +475,11 @@ if ($get) {
           write-host -nonewline "   :   "
           write-host "$desc" -f darkgray
         } else {
-          write-host -nonewline "$string" -f darkred
-          write-host -nonewline "   :   "
-          write-host "$desc" -f darkgray
+          if ($shownonmetas) {
+            write-host -nonewline "$string" -f darkred
+            write-host -nonewline "   :   "
+            write-host "$desc" -f darkgray
+          }
         }
       }
     }
