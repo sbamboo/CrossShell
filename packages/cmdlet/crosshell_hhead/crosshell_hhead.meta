@@ -1,21 +1,10 @@
 {
-<<<<<<< Updated upstream
-  "format": "zip",
-  "type": "cmdlet",
-  "source": "https://github.com/simonkalmiclaesson/packagehand_repository/raw/main/repository/cmdlet/_builtins/crosshell_hhead/crosshell_hhead_latest_global.package",
-  "version": "1.0",
   "sourceType": "web",
-  "versionTag": "latest",
-  "target": "global",
-  "Description": "Cmdlets regarding the header in the msgcentral."
-=======
-  "target": "global",
-  "version": "1.0",
   "format": "zip",
-  "versionTag": "latest",
   "Description": "Cmdlets regarding the header in the msgcentral.",
-  "sourceType": "web",
-  "type": "cmdlet",
-  "source": "https://github.com/simonkalmiclaesson/packagehand_repository/raw/main/repository/cmdlet/_builtins/crosshell_hhead/crosshell_hhead_latest_global.package"
->>>>>>> Stashed changes
+  "target": "global",
+  "version": "1.0",
+  "versionTag": "latest",
+  "source": "https://github.com/simonkalmiclaesson/packagehand_repository/raw/main/repository/cmdlet/_builtins/crosshell_hhead/crosshell_hhead_latest_global.package",
+  "type": "cmdlet"
 }

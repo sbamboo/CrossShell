@@ -1,21 +1,10 @@
 {
-<<<<<<< Updated upstream
-  "format": "zip",
-  "type": "cmdlet",
-  "source": "https://github.com/simonkalmiclaesson/packagehand_repository/raw/main/repository/cmdlet/_builtins/crosshell_bufferman/crosshell_bufferman_latest_global.package",
-  "version": "1.0",
   "sourceType": "web",
-  "versionTag": "latest",
-  "target": "global",
-  "Description": "Cmdlet for saving and loading the pwsh screen buffer."
-=======
-  "target": "global",
-  "version": "1.0",
   "format": "zip",
-  "versionTag": "latest",
   "Description": "Cmdlet for saving and loading the pwsh screen buffer.",
-  "sourceType": "web",
-  "type": "cmdlet",
-  "source": "https://github.com/simonkalmiclaesson/packagehand_repository/raw/main/repository/cmdlet/_builtins/crosshell_bufferman/crosshell_bufferman_latest_global.package"
->>>>>>> Stashed changes
+  "target": "global",
+  "version": "1.0",
+  "versionTag": "latest",
+  "source": "https://github.com/simonkalmiclaesson/packagehand_repository/raw/main/repository/cmdlet/_builtins/crosshell_bufferman/crosshell_bufferman_latest_global.package",
+  "type": "cmdlet"
 }

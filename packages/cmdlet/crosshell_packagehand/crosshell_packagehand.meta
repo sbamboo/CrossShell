@@ -1,21 +1,10 @@
 {
-<<<<<<< Updated upstream
-  "version": "1.0",
-  "type": "cmdlet",
-  "versionTag": "latest",
   "sourceType": "web",
-  "target": "global",
   "format": "zip",
-  "source": "https://github.com/simonkalmiclaesson/packagehand_repository/raw/main/repository/cmdlet/_builtins/crosshell_packagehand/crosshell_packagehand_latest_global.package",
-  "Description": "Crosshells packagehandler. Packagehand!"
-=======
-  "versionTag": "latest",
   "Description": "Crosshells packagehandler. Packagehand!",
-  "format": "zip",
-  "source": "https://github.com/simonkalmiclaesson/packagehand_repository/raw/main/repository/cmdlet/_builtins/crosshell_packagehand/crosshell_packagehand_latest_global.package",
-  "sourceType": "web",
-  "version": "1.0",
   "target": "global",
+  "version": "1.0",
+  "versionTag": "latest",
+  "source": "https://github.com/simonkalmiclaesson/packagehand_repository/raw/main/repository/cmdlet/_builtins/crosshell_packagehand/crosshell_packagehand_latest_global.package",
   "type": "cmdlet"
->>>>>>> Stashed changes
 }

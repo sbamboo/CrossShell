@@ -1,21 +1,10 @@
 {
-<<<<<<< Updated upstream
-  "format": "zip",
-  "type": "cmdlet",
-  "source": "https://github.com/simonkalmiclaesson/packagehand_repository/raw/main/repository/cmdlet/_builtins/crosshell_get-help/crosshell_get-help_latest_global.package",
-  "version": "1.0",
   "sourceType": "web",
-  "versionTag": "latest",
-  "target": "global",
-  "Description": "Contains cdmlets for showing help. And to show more information about commands."
-=======
-  "target": "global",
-  "version": "1.0",
   "format": "zip",
-  "versionTag": "latest",
   "Description": "Contains cdmlets for showing help. And to show more information about commands.",
-  "sourceType": "web",
-  "type": "cmdlet",
-  "source": "https://github.com/simonkalmiclaesson/packagehand_repository/raw/main/repository/cmdlet/_builtins/crosshell_get-help/crosshell_get-help_latest_global.package"
->>>>>>> Stashed changes
+  "target": "global",
+  "version": "1.0",
+  "versionTag": "latest",
+  "source": "https://github.com/simonkalmiclaesson/packagehand_repository/raw/main/repository/cmdlet/_builtins/crosshell_get-help/crosshell_get-help_latest_global.package",
+  "type": "cmdlet"
 }

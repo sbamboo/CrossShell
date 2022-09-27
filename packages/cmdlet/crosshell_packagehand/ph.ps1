@@ -38,10 +38,7 @@ param(
   [switch]$all,
   [alias("ar","reload")]
   [switch]$autoreload,
-<<<<<<< Updated upstream:packages/cmdlet/crosshell_packagehand/ph.ps1
-=======
   [switch]$showiwrprogress,
->>>>>>> Stashed changes:packages/cmdlet/_builtins/packagehand/ph.ps1
 
   [alias("s")]
   [string]$search

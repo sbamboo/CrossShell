@@ -1,21 +1,10 @@
 {
-<<<<<<< Updated upstream
-  "format": "zip",
-  "type": "cmdlet",
-  "source": "https://github.com/simonkalmiclaesson/packagehand_repository/raw/main/repository/cmdlet/_thirdpartyimports/lolcat/lolcat_latest_global.package",
-  "version": "1.0",
   "sourceType": "web",
-  "versionTag": "latest",
-  "target": "global",
-  "Description": "Simplified implementation of lolcat in PowerShell."
-=======
-  "target": "global",
-  "version": "1.0",
   "format": "zip",
-  "versionTag": "latest",
   "Description": "Simplified implementation of lolcat in PowerShell.",
-  "sourceType": "web",
-  "type": "cmdlet",
-  "source": "https://github.com/simonkalmiclaesson/packagehand_repository/raw/main/repository/cmdlet/_thirdpartyimports/lolcat/lolcat_latest_global.package"
->>>>>>> Stashed changes
+  "target": "global",
+  "version": "1.0",
+  "versionTag": "latest",
+  "source": "https://github.com/simonkalmiclaesson/packagehand_repository/raw/main/repository/cmdlet/_thirdpartyimports/lolcat/lolcat_latest_global.package",
+  "type": "cmdlet"
 }

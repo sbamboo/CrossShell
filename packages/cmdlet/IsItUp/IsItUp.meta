@@ -1,21 +1,10 @@
 {
-<<<<<<< Updated upstream
-  "format": "zip",
-  "type": "cmdlet",
-  "source": "https://github.com/simonkalmiclaesson/packagehand_repository/raw/main/repository/cmdlet/IsItUp/IsItUp_latest_global.package",
-  "version": "1.0",
   "sourceType": "web",
-  "versionTag": "latest",
-  "target": "global",
-  "Description": "An unofficial tool to check if a site is up using isitup.org"
-=======
-  "target": "global",
-  "version": "1.0",
   "format": "zip",
-  "versionTag": "latest",
   "Description": "An unofficial tool to check if a site is up using isitup.org",
-  "sourceType": "web",
-  "type": "cmdlet",
-  "source": "https://github.com/simonkalmiclaesson/packagehand_repository/raw/main/repository/cmdlet/IsItUp/IsItUp_latest_global.package"
->>>>>>> Stashed changes
+  "target": "global",
+  "version": "1.0",
+  "versionTag": "latest",
+  "source": "https://github.com/simonkalmiclaesson/packagehand_repository/raw/main/repository/cmdlet/IsItUp/IsItUp_latest_global.package",
+  "type": "cmdlet"
 }

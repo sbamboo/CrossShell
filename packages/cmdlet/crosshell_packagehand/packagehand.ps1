@@ -38,10 +38,7 @@ param(
   [switch]$all,
   [alias("ar","reload")]
   [switch]$autoreload,
-<<<<<<< Updated upstream:packages/cmdlet/crosshell_packagehand/packagehand.ps1
-=======
   [switch]$showiwrprogress,
->>>>>>> Stashed changes:packages/cmdlet/_builtins/packagehand/packagehand.ps1
 
   [alias("s")]
   [string]$search
@@ -135,21 +132,10 @@ if ($install) {
         $pack = ($pack -split "=")[0]
         $pack = $pack -replace '@|{|}|=',""
         if ($pack -ne "vTag") {
-<<<<<<< Updated upstream:packages/cmdlet/crosshell_packagehand/packagehand.ps1
-          $old_progressPreference = $progressPreference
-          $progressPreference = "SilentlyContinue"
-          if ($pack -ne "piglet") {
-            if ($force) {
-              CheckAndRun-input "packagehand -install $pack"
-            } else {
-              CheckAndRun-input "packagehand -install $pack"
-            }
-=======
           if ($force) {
             CheckAndRun-input "packagehand -install $pack"
           } else {
             CheckAndRun-input "packagehand -install $pack"
->>>>>>> Stashed changes:packages/cmdlet/_builtins/packagehand/packagehand.ps1
           }
           $progressPreference = $old_progressPreference
         }
@@ -163,10 +149,7 @@ if ($install) {
         $confirm = read-host "[Y/N] "
         if ($confirm -ne "y") {
           write-host "Operation canceled!" -f darkgray
-<<<<<<< Updated upstream:packages/cmdlet/crosshell_packagehand/packagehand.ps1
-=======
           $progressPreference = $old_progressPreference
->>>>>>> Stashed changes:packages/cmdlet/_builtins/packagehand/packagehand.ps1
           exit
         }
       }
@@ -191,10 +174,7 @@ if ($install) {
           Create-PackageMeta
         } else {
           write-host "Error: Package $package_name is $script:package_target only. While host is $os." -f red
-<<<<<<< Updated upstream:packages/cmdlet/crosshell_packagehand/packagehand.ps1
-=======
           $progressPreference = $old_progressPreference
->>>>>>> Stashed changes:packages/cmdlet/_builtins/packagehand/packagehand.ps1
           exit
         }
       }
@@ -215,10 +195,7 @@ if ($install) {
           Create-PackageMeta
         } else {
           write-host "Error: Package $package_name is $script:package_target only. While host is $os." -f red
-<<<<<<< Updated upstream:packages/cmdlet/crosshell_packagehand/packagehand.ps1
-=======
           $progressPreference = $old_progressPreference
->>>>>>> Stashed changes:packages/cmdlet/_builtins/packagehand/packagehand.ps1
           exit
         }
       }
