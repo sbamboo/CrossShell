@@ -1,0 +1,10 @@
+{
+  "format": "zip",
+  "type": "cmdlet",
+  "source": "https://github.com/simonkalmiclaesson/packagehand_repository/raw/main/repository/cmdlet/_thirdpartyimports/pwshfetch/pwshfetch_latest_global.package",
+  "version": "1.0",
+  "sourceType": "web",
+  "versionTag": "latest",
+  "target": "global",
+  "Description": "Winfetch is a command-line system information utility written in PowerShell 5+."
+}

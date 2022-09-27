@@ -129,11 +129,16 @@ if ($install) {
         $pack = ($pack -split "=")[0]
         $pack = $pack -replace '@|{|}|=',""
         if ($pack -ne "vTag") {
-          if ($force) {
-            CheckAndRun-input "packagehand -install $pack"
-          } else {
-            CheckAndRun-input "packagehand -install $pack"
+          $old_progressPreference = $progressPreference
+          $progressPreference = "SilentlyContinue"
+          if ($pack -ne "piglet") {
+            if ($force) {
+              CheckAndRun-input "packagehand -install $pack"
+            } else {
+              CheckAndRun-input "packagehand -install $pack"
+            }
           }
+          $progressPreference = $old_progressPreference
         }
       }
     }

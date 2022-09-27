@@ -1,10 +1,10 @@
 {
+  "format": "zip",
   "type": "cmdlet",
-  "target": "global",
-  "sourceType": "web",
-  "version": "1.0",
   "source": "https://github.com/simonkalmiclaesson/packagehand_repository/raw/main/repository/cmdlet/_development/crosshell_test-cmdlet/crosshell_test-cmdlet_latest_global.package",
-  "Description": "Test cmdlet",
+  "version": "1.0",
+  "sourceType": "web",
   "versionTag": "latest",
-  "format": "zip"
+  "target": "global",
+  "Description": "Test cmdlet"
 }

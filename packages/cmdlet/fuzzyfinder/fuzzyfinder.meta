@@ -1,10 +1,10 @@
 {
+  "format": "zip",
   "type": "cmdlet",
-  "target": "win",
-  "sourceType": "web",
-  "version": "1.0",
   "source": "https://github.com/simonkalmiclaesson/packagehand_repository/raw/main/repository/cmdlet/_thirdpartyimports/fuzzyfinder/fuzzyfinder_latest_win.package",
-  "Description": "A command-line fuzzy finder.",
+  "version": "1.0",
+  "sourceType": "web",
   "versionTag": "latest",
-  "format": "zip"
+  "target": "win",
+  "Description": "A command-line fuzzy finder."
 }
