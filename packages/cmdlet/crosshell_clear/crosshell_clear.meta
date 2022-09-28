@@ -1,10 +1,10 @@
 {
-  "sourceType": "web",
-  "format": "zip",
-  "Description": "Cmdlets for clearing the screen.",
-  "target": "global",
   "version": "1.0",
   "versionTag": "latest",
+  "sourceType": "web",
+  "target": "global",
   "source": "https://github.com/simonkalmiclaesson/packagehand_repository/raw/main/repository/cmdlet/_builtins/crosshell_clear/crosshell_clear_latest_global.package",
-  "type": "cmdlet"
+  "type": "cmdlet",
+  "Description": "Cmdlets for clearing the screen.",
+  "format": "zip"
 }

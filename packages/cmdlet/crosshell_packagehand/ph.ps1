@@ -25,6 +25,8 @@ param(
   [Parameter(ValueFromPipeline=$true)]
   [string]$package,
 
+  [string]$repo,
+
   [alias("v")]
   [string]$version,
 
@@ -40,7 +42,7 @@ param(
   [switch]$autoreload,
   [switch]$showiwrprogress,
   [switch]$shownonmetas,
-  [alias("grepo","repo","rrepo")]
+  [alias("grepo","rr","rrepo")]
   [switch]$reloadrepo,
   [alias("o")]
   [switch]$overlap,

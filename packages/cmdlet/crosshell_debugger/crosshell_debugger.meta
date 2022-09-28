@@ -1,10 +1,10 @@
 {
-  "sourceType": "web",
-  "format": "zip",
-  "Description": "Tool for enabling or disabling debug options in the shell.",
-  "target": "global",
   "version": "1.0",
   "versionTag": "latest",
+  "sourceType": "web",
+  "target": "global",
   "source": "https://github.com/simonkalmiclaesson/packagehand_repository/raw/main/repository/cmdlet/_builtins/crosshell_debugger/crosshell_debugger_latest_global.package",
-  "type": "cmdlet"
+  "type": "cmdlet",
+  "Description": "Tool for enabling or disabling debug options in the shell.",
+  "format": "zip"
 }

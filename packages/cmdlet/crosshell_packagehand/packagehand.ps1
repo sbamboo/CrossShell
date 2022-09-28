@@ -25,6 +25,8 @@ param(
   [Parameter(ValueFromPipeline=$true)]
   [string]$package,
 
+  [string]$repo,
+
   [alias("v")]
   [string]$version,
 
@@ -40,7 +42,7 @@ param(
   [switch]$autoreload,
   [switch]$showiwrprogress,
   [switch]$shownonmetas,
-  [alias("grepo","repo","rrepo")]
+  [alias("grepo","rr","rrepo")]
   [switch]$reloadrepo,
   [alias("o")]
   [switch]$overlap,
@@ -50,8 +52,10 @@ param(
 )
 
 # Get repo
-$script:packagehand_private_repo_rawdata = (iwr -uri "https://raw.githubusercontent.com/simonkalmiclaesson/packagehand_repository/main/repo.json").content
-if ($script:packagehand_private_repo_rawdata) {$repo_raw = $script:packagehand_private_repo_rawdata} else {$repo_raw = (iwr -uri "https://raw.githubusercontent.com/simonkalmiclaesson/packagehand_repository/main/repo.json").content}
+if ($repo) { (iwr -uri "$repo").content } else {
+  $script:packagehand_private_repo_rawdata = (iwr -uri "https://raw.githubusercontent.com/simonkalmiclaesson/packagehand_repository/main/repo.json").content
+  if ($script:packagehand_private_repo_rawdata) {$repo_raw = $script:packagehand_private_repo_rawdata} else {$repo_raw = (iwr -uri "https://raw.githubusercontent.com/simonkalmiclaesson/packagehand_repository/main/repo.json").content}
+}
 $repo_data = ConvertFrom-Json "$repo_raw"
 
 #get os
@@ -145,6 +149,7 @@ if ($install) {
         $pack = $pack -replace '@|{|}|=',""
         if ($pack -ne "vTag") {
           $allowedinstall = $true
+          # if overlap flag is not used only install packs not containing metas
           if (!$overlap) {if (hasMeta $pack) {$allowedinstall = $false}}
           if ($allowedinstall -eq $true) {
             if ($force) {

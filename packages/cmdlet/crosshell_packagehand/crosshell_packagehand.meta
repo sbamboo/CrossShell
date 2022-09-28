@@ -1,9 +1,9 @@
 {
-  "target": "global",
-  "source": "https://github.com/simonkalmiclaesson/packagehand_repository/raw/main/repository/cmdlet/_builtins/crosshell_packagehand/crosshell_packagehand_latest_global.package",
   "version": "1.0",
   "versionTag": "latest",
   "sourceType": "web",
+  "target": "global",
+  "source": "https://github.com/simonkalmiclaesson/packagehand_repository/raw/main/repository/cmdlet/_builtins/crosshell_packagehand/crosshell_packagehand_latest_global.package",
   "type": "cmdlet",
   "Description": "Crosshells packagehandler. Packagehand!",
   "format": "zip"
