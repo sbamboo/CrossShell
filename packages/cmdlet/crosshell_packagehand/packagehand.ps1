@@ -153,7 +153,7 @@ if ($install) {
           if (!$overlap) {if (hasMeta $pack) {$allowedinstall = $false}}
           if ($allowedinstall -eq $true) {
             if ($force) {
-              CheckAndRun-input "packagehand -install $pack"
+              CheckAndRun-input "packagehand -install $pack -force"
             } else {
               CheckAndRun-input "packagehand -install $pack"
             }
