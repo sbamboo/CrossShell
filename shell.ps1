@@ -47,10 +47,11 @@ $script:shell_opt_windowtitle_original = $old_windowtitle
 $script:shell_opt_windowtitle_last = $host.ui.rawui.windowtitle
 if ($script:old_path) {} else {$script:old_path = $pwd}
 $script:default_prefix = "> "
+$script:prefix_dir = $true
 $script:prefix_enabled = $true
+$script:prefix = $script:default_prefix
 $script:prefixcolor = "darkgray"
 $script:prefixdircolor = "darkgray"
-$script:prefix_dir = $true
 $script:basedir = $psscriptroot
 $script:shell_suppress_menu_cls = $false
 if ($supressCls) {
@@ -130,7 +131,7 @@ function script:saveState($variable,$value,$folder,$reset) {
     $value = $false
     del "$variable.state"
   } else {
-    set-variable -name $variable -value $value -scope Script
+    set-variable -name $variable -value "$value" -scope Script
     $state = (get-variable -name $variable -scope Script).value
     $state | out-file "$variable.state"
   }
@@ -432,7 +433,6 @@ if ($scriptfile) {[string]$cc = "script " + '"' + $scriptfile + '"'; load-cmdlet
 $loop = $true
 if ($script:hostID -ne "pwsh.5l") {load-cmdlets}
 cd $startdir
-$prefix = $script:default_prefix
 if ($noheader) {if ($script:shell_suppress_menu_cls -ne $true) {cls}} else {write-header}
 while ($loop) {
   #windowtitle
@@ -441,7 +441,7 @@ while ($loop) {
   $script:current_directory = $pwd
   if ($script:gobackcommand) {iex($script:gobackcommand); $script:gobackcommand = $null}
   $command = $null
-  if ($script:prefix_dir) {writeDirPrefix($pwd)}
+  if ($script:prefix_dir -eq $true -and $script:prefix_enabled -eq $true) {writeDirPrefix($pwd)}
   write-host -nonewline $prefix -f $script:prefixcolor
   $command = read-host
   if ($command -eq "exit") {
