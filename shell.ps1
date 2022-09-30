@@ -166,6 +166,7 @@ check-latestversion
 function script:ReplacePSStyleFormating($p) {
   [string]$s = $p
   
+  #Add to "dir after" prefixes work correctly.
   if ($script:prefix_dir -eq $true -and $script:prefix_enabled -eq $true) {
     $s = $s.replace("{dir}","$script:current_directory")
   } else {
