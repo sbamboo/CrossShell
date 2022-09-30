@@ -46,8 +46,8 @@ $script:shell_opt_windowtitle_current = $host.ui.rawui.windowtitle
 $script:shell_opt_windowtitle_original = $old_windowtitle
 $script:shell_opt_windowtitle_last = $host.ui.rawui.windowtitle
 if ($script:old_path) {} else {$script:old_path = $pwd}
-#$script:default_prefix = "> "
-$script:default_prefix = "{f.darkgray}{dir}\: {f.magenta}$env:username{f.darkgray}@{f.darkcyan}$(hostname){f.darkgray}\> {r}"
+$script:default_prefix = "{dir}\> "
+#$script:default_prefix = "{f.darkgray}{dir}\: {f.magenta}$env:username{f.darkgray}@{f.darkcyan}$(hostname){f.darkgray}\> {r}"
 $script:prefix_dir = $true
 $script:prefix_enabled = $true
 $script:prefix = $script:default_prefix
@@ -176,6 +176,9 @@ function script:ReplacePSStyleFormating($p) {
       $s = $s.trimstart("> ")
       $s = $s.trimstart(": ")
       $s = $s.trimstart(" ")
+      if ($s -eq "") {$s = $splitString[1]}
+      if ($s -eq "\> ") {$s = "> "}
+      if ($s -eq "\>") {$s = ">"}
     }
   }
 
