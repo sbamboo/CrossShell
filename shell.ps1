@@ -46,7 +46,8 @@ $script:shell_opt_windowtitle_current = $host.ui.rawui.windowtitle
 $script:shell_opt_windowtitle_original = $old_windowtitle
 $script:shell_opt_windowtitle_last = $host.ui.rawui.windowtitle
 if ($script:old_path) {} else {$script:old_path = $pwd}
-$script:default_prefix = "> "
+#$script:default_prefix = "> "
+$script:default_prefix = "{f.darkgray}{dir}\: {f.magenta}$env:username{f.darkgray}@{f.darkcyan}$(hostname){f.darkgray}\> {r}"
 $script:prefix_dir = $true
 $script:prefix_enabled = $true
 $script:prefix = $script:default_prefix
@@ -161,6 +162,91 @@ function check-latestversion{
 }
 check-latestversion
 
+#Function to replace psstyle formatting with placeholders
+function script:ReplacePSStyleFormating($p) {
+  [string]$s = $p
+  
+  if ($script:prefix_dir -eq $true -and $script:prefix_enabled -eq $true) {
+    $s = $s.replace("{dir}","$script:current_directory")
+  } else {
+    if ($script:prefix -like "*{dir}*") {
+      [array]$splitString = $s -split "{dir}"
+      $s = $s = $splitString[1]
+      $s = $s.trimstart("\ ")
+      $s = $s.trimstart("> ")
+      $s = $s.trimstart(": ")
+      $s = $s.trimstart(" ")
+    }
+  }
+
+  $s = $s.replace("{reset}","$($psstyle.reset)")
+  $s = $s.replace("{blinkoff}","$($psstyle.BlinkOff)")
+  $s = $s.replace("{blink}","$($psstyle.Blink)")
+  $s = $s.replace("{boldoff}","$($psstyle.BoldOff)")
+  $s = $s.replace("{bold","$($psstyle.Bold)")
+  $s = $s.replace("{hiddenoff}","$($psstyle.HiddenOff)")
+  $s = $s.replace("{hidden}","$($psstyle.Hidden)")
+  $s = $s.replace("{reverseoff}","$($psstyle.ReverseOff)")
+  $s = $s.replace("{reverse}","$($psstyle.Reverse)")
+  $s = $s.replace("{italicoff}","$($psstyle.ItalicOff)")
+  $s = $s.replace("{italic}","$($psstyle.Italic)")
+  $s = $s.replace("{underlineoff}","$($psstyle.UnderlineOff)")
+  $s = $s.replace("{underline}","$($psstyle.Underline)")
+  $s = $s.replace("{strikethroughoff}","$($psstyle.StrikethroughOff)")
+  $s = $s.replace("{strikethrough}","$($psstyle.Strikethrough)")
+
+  $s = $s.replace("{outputrendering}","$($psstyle.OutputRendering)")
+  $s = $s.replace("{formataccent}","$($psstyle.Formatting.FormatAccent)")
+  $s = $s.replace("{tableheader}","$($psstyle.Formatting.TableHeader)")
+  $s = $s.replace("{erroraccent}","$($psstyle.Formatting.ErrorAccent)")
+  $s = $s.replace("{error}","$($psstyle.Formatting.Error)")
+  $s = $s.replace("{warning}","$($psstyle.Formatting.Warning)")
+  $s = $s.replace("{verbose}","$($psstyle.Formatting.Verbose)")
+  $s = $s.replace("{debug}","$($psstyle.Formatting.Debug)")
+  $s = $s.replace("{p.style}","$($psstyle.Progress.Style)")
+  $s = $s.replace("{p.maxwidth}","$($psstyle.Progress.MaxWidth)")
+  $s = $s.replace("{p.view}","$($psstyle.Progress.View)")
+  $s = $s.replace("{fi.directory}","$($psstyle.FileInfo.Directory)")
+  $s = $s.replace("{fi.symboliclink}","$($psstyle.FileInfo.SymbolicLink)")
+  $s = $s.replace("{fi.executable}","$($psstyle.FileInfo.Executable)")
+  $s = $s.replace("{fi.extension}","$($psstyle.FileInfo.Extension)")
+
+  $s = $s.replace("{f.black}","$($psstyle.Foreground.Black)")
+  $s = $s.replace("{f.darkgray}","$($psstyle.Foreground.BrightBlack)")
+  $s = $s.replace("{f.gray}","$($psstyle.Foreground.White)")
+  $s = $s.replace("{f.white}","$($psstyle.Foreground.BrightWhite)")
+  $s = $s.replace("{f.darkred}","$($psstyle.Foreground.Red)")
+  $s = $s.replace("{f.red}","$($psstyle.Foreground.BrightRed)")
+  $s = $s.replace("{f.darkmagenta}","$($psstyle.Foreground.Magenta)")
+  $s = $s.replace("{f.magenta}","$($psstyle.Foreground.BrightMagenta)")
+  $s = $s.replace("{f.darkblue}","$($psstyle.Foreground.Blue)")
+  $s = $s.replace("{f.blue}","$($psstyle.Foreground.BrightBlue)")
+  $s = $s.replace("{f.darkcyan}","$($psstyle.Foreground.Cyan)")
+  $s = $s.replace("{f.cyan}","$($psstyle.Foreground.BrightCyan)")
+  $s = $s.replace("{f.darkgreen}","$($psstyle.Foreground.Green)")
+  $s = $s.replace("{f.green}","$($psstyle.Foreground.BrightGreen)")
+  $s = $s.replace("{f.darkyellow}","$($psstyle.Foreground.Yellow)")
+  $s = $s.replace("{f.yellow}","$($psstyle.Foreground.BrightYellow)")
+
+  $s = $s.replace("{b.black}","$($psstyle.Background.Black)")
+  $s = $s.replace("{b.darkgray}","$($psstyle.Background.BrightBlack)")
+  $s = $s.replace("{b.gray}","$($psstyle.Background.White)")
+  $s = $s.replace("{b.white}","$($psstyle.Background.BrightWhite)")
+  $s = $s.replace("{b.darkred}","$($psstyle.Background.Red)")
+  $s = $s.replace("{b.red}","$($psstyle.Background.BrightRed)")
+  $s = $s.replace("{b.darkmagenta}","$($psstyle.Background.Magenta)")
+  $s = $s.replace("{b.magenta}","$($psstyle.Background.BrightMagenta)")
+  $s = $s.replace("{b.darkblue}","$($psstyle.Background.Blue)")
+  $s = $s.replace("{b.blue}","$($psstyle.Background.BrightBlue)")
+  $s = $s.replace("{b.darkcyan}","$($psstyle.Background.Cyan)")
+  $s = $s.replace("{b.cyan}","$($psstyle.Background.BrightCyan)")
+  $s = $s.replace("{b.darkgreen}","$($psstyle.Background.Green)")
+  $s = $s.replace("{b.green}","$($psstyle.Background.BrightGreen)")
+  $s = $s.replace("{b.darkyellow}","$($psstyle.Background.Yellow)")
+  $s = $s.replace("{b.yellow}","$($psstyle.Background.BrightYellow)")
+  $s = $s.replace("{r}","$($psstyle.reset)")
+  return $s
+}
 function script:write-message{
   #Usage:   write-message <text-array> <foregroundcolor-array> <backgroundcolor-array>
   #         if <text-array> has more then one item, the function will write them both to one line but with diffrent color options if the color array have more then one item.
@@ -441,8 +527,8 @@ while ($loop) {
   $script:current_directory = $pwd
   if ($script:gobackcommand) {iex($script:gobackcommand); $script:gobackcommand = $null}
   $command = $null
-  if ($script:prefix_dir -eq $true -and $script:prefix_enabled -eq $true) {writeDirPrefix($pwd)}
-  write-host -nonewline $prefix -f $script:prefixcolor
+  #if ($script:prefix_dir -eq $true -and $script:prefix_enabled -eq $true) {writeDirPrefix($pwd)}
+  write-host -nonewline $(ReplacePSStyleFormating($prefix)) -f $script:prefixcolor
   $command = read-host
   if ($command -eq "exit") {
     $host.ui.rawui.windowtitle = $old_windowtitle
