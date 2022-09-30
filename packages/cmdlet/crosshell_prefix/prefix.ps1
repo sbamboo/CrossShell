@@ -3,7 +3,6 @@
   Cmdlet for changing and toggling the shell prefix.
 #>
 param([Parameter(ValueFromPipeline=$true)][string]$p,[alias("r")][switch]$reset,[alias("s")][switch]$set,[alias("t")][switch]$toggle,[alias("c")][switch]$setcolor,[alias("sc")][string]$setprefixcolor,[alias("d")][switch]$dir,[string]$setdircolor)
-
 if ($reset) {
   saveState "prefix" $script:default_prefix prefix
 }
