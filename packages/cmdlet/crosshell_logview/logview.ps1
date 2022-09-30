@@ -45,6 +45,6 @@ function printFormatedLog {
 }
 
 if ($inputs) {
-    $log = "$psscriptroot\..\..\assets\inputs.log"
+    $log = "$script:basedir\assets\inputs.log"
     printFormatedLog -log $log -mode "auto" 
 }
