@@ -52,7 +52,7 @@ $script:default_prefix = '{dir:"{dir}\"}> '
 # Prefixes made by: Simon Kalmi Claesson
 #  $script:default_prefix = '{f.darkgray}{dir:"{dir}:\ "}{f.magenta}{user}{f.darkgray}@{f.darkcyan}{hostname}{f.darkgray}\> {r}'
 #  $script:default_prefix = '{f.magenta}{user}{f.darkgray}@{f.darkcyan}{hostname}{f.darkgray}{f.darkgray}{dir:"  {dir}\"}> {r}'
-#  $script:default_prefix = '{u.000A}{f.darkcyan}{u.e0b6}{f.white}{b.darkcyan} {dir:"{dir}\ "}{r}{f.darkcyan}{u.e0b0} {f.black}{b.magenta}{u.e0b0} {f.white}{user}@{hostname} {r}{f.magenta}{u.e0b0}{r} '
+#  $script:default_prefix = '{u.000A}{f.darkcyan}{u.e0b6}{f.white}{b.darkcyan} {dir:"{dir}\ "}{r}{f.darkcyan}{u.e0b0} {f.black}{b.magenta}{u.e0b0} {f.white}{bold}{user}@{hostname} {r}{f.magenta}{u.e0b0}{boldoff}{r} '
 $script:prefix_dir = $true
 $script:prefix_enabled = $true
 $script:prefix = $script:default_prefix
