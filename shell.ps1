@@ -36,7 +36,7 @@ if ($interpret) {
 }
 
 #Version control
-$script:crosshell_versionID = "0.0.1_dev-A01"
+$script:crosshell_versionID = "0.0.2_dev-A12"
 
 $script:shell_opt_multiline = $false
 
