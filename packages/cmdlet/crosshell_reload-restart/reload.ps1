@@ -20,6 +20,7 @@ if ($full) {
     }
   }
 } else {
+  $cl = gl
   load-cmdlets
-  $script:gobackcommand = "cd $script:current_directory"
+  cd $cl
 }
