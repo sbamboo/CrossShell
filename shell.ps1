@@ -46,7 +46,7 @@ $script:shell_opt_windowtitle_current = $host.ui.rawui.windowtitle
 $script:shell_opt_windowtitle_original = $old_windowtitle
 $script:shell_opt_windowtitle_last = $host.ui.rawui.windowtitle
 if ($script:old_path) {} else {$script:old_path = $pwd}
-$script:default_prefix = "{dir}\> "
+$script:default_prefix = '{dir:"{dir}\"}> '
 #$script:default_prefix = "{f.darkgray}{dir}\: {f.magenta}$env:username{f.darkgray}@{f.darkcyan}$(hostname){f.darkgray}\> {r}"
 $script:prefix_dir = $true
 $script:prefix_enabled = $true
@@ -165,21 +165,35 @@ check-latestversion
 #Function to replace psstyle formatting with placeholders
 function script:ReplacePSStyleFormating($p) {
   [string]$s = $p
-  
-  #Add to "dir after" prefixes work correctly.
-  if ($script:prefix_dir -eq $true -and $script:prefix_enabled -eq $true) {
-    $s = $s.replace("{dir}","$script:current_directory")
-  } else {
-    if ($script:prefix -like "*{dir}*") {
-      [array]$splitString = $s -split "{dir}"
-      $s = $s = $splitString[1]
-      $s = $s.trimstart("\ ")
-      $s = $s.trimstart("> ")
-      $s = $s.trimstart(": ")
-      $s = $s.trimstart(" ")
-      if ($s -eq "") {$s = $splitString[1]}
-      if ($s -eq "\> ") {$s = "> "}
-      if ($s -eq "\>") {$s = ">"}
+  if ($s -like "*{dir:*") {
+    #fix check
+    $pat = '{dir:"{dir}"}'
+    $pat2 = '{dir:"{dir}␀"}'
+    if ($s -like "*$pat*") {
+      $s = $s.replace("$pat","$pat2")
+    }
+    # match for dir element
+    [regex]$pattern = '{dir:([^]]+)"}'
+    $match = ""
+    $pattern.Matches($s) | foreach { $match = $_.value }
+    $matchraw = $match
+    $matchContent = (($match.TrimStart('\{')).TrimStart('dir:"')).TrimEnd('"}')
+    #remove placehold char
+    $s = $s.replace("␀","")
+    $matchraw = $matchraw.replace("␀","")
+    $matchContent = $matchContent.replace("␀","")
+    #handle dir element
+    if ($script:prefix_dir -eq $true -and $script:prefix_enabled -eq $true) {
+      $s = $s.replace("$matchraw","$matchContent")
+      $s = $s.replace("{dir}",$script:current_directory)
+    } else {
+      $s = $s.replace("$matchraw","")
+    }
+  } elseif ($s -like "*{dir}*") {
+    if ($script:prefix_dir -eq $true -and $script:prefix_enabled -eq $true) {
+      $s = $s.replace("{dir}",$script:current_directory)
+    } else {
+      $s = $s.replace("{dir}","")
     }
   }
 
