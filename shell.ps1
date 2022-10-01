@@ -47,7 +47,8 @@ $script:shell_opt_windowtitle_original = $old_windowtitle
 $script:shell_opt_windowtitle_last = $host.ui.rawui.windowtitle
 if ($script:old_path) {} else {$script:old_path = $pwd}
 $script:default_prefix = '{dir:"{dir}\"}> '
-#$script:default_prefix = "{f.darkgray}{dir}\: {f.magenta}$env:username{f.darkgray}@{f.darkcyan}$(hostname){f.darkgray}\> {r}"
+#$script:default_prefix = '{f.darkgray}{dir:"{dir}:\ "}{f.magenta}{user}{f.darkgray}@{f.darkcyan}{hostname}{f.darkgray}\> {r}'
+#$script:default_prefix = '{f.magenta}{user}{f.darkgray}@{f.darkcyan}{hostname}{f.darkgray}{f.darkgray}{dir:"  {dir}\"}> {r}'
 $script:prefix_dir = $true
 $script:prefix_enabled = $true
 $script:prefix = $script:default_prefix
@@ -165,6 +166,7 @@ check-latestversion
 #Function to replace psstyle formatting with placeholders
 function script:ReplacePSStyleFormating($p) {
   [string]$s = $p
+  # Directory parse
   if ($s -like "*{dir:*") {
     #fix check
     $pat = '{dir:"{dir}"}'
@@ -197,6 +199,41 @@ function script:ReplacePSStyleFormating($p) {
     }
   }
 
+  #Command parse
+  [regex]$pattern = '\[([^]]+)\]'
+  $pattern.Matches($s) | foreach { [array]$matches += "$_" }
+  foreach ($m in $matches) {
+    $n = $m.trimstart("[")
+    $n = $n.trimend("\]")
+    # control match
+    $prefixparse_old_erroractionpreference = $ErrorActionPreference
+    $ErrorActionPreference = "SilentlyContinue"
+    $np = $n.replace('$',"")
+    $isVar = get-variable "$np"
+    $isCmd = get-command "$n"
+    write-host "'$n' '$isVar' '$isCmd'"
+    if ("$isVar" -eq "" -and "$isCmd" -eq "") {} else {
+      $n = iex($n)
+      $s = $s.replace($m,$n) 
+    }
+    $ErrorActionPreference = $prefixparse_old_erroractionpreference
+  }
+
+  #Special key parse
+  $s = $s.replace("{user}","$($env:username)")
+  $s = $s.replace("{hostname}","$(hostname)")
+
+  #ansi key parse
+  $matches = $null
+  [regex]$pattern = '\{\\([^}]+)\\\}'
+  $pattern.Matches($s) | foreach { [array]$matches += "$_" }
+  foreach ($m in $matches) {
+    $n = $m.trimstart("\{\\")
+    $n = $n.trimend("\\\}")
+    $s = $s.replace("$m","`e[$n")
+  }
+
+  #General key parse
   $s = $s.replace("{reset}","$($psstyle.reset)")
   $s = $s.replace("{blinkoff}","$($psstyle.BlinkOff)")
   $s = $s.replace("{blink}","$($psstyle.Blink)")
