@@ -25,7 +25,9 @@ param(
 
   [switch]$supressCls,
 
-  [switch]$noheader
+  [switch]$noheader,
+
+  [switch]$autoclearmode
 )
 
 if ($interpret) {
@@ -47,8 +49,10 @@ $script:shell_opt_windowtitle_original = $old_windowtitle
 $script:shell_opt_windowtitle_last = $host.ui.rawui.windowtitle
 if ($script:old_path) {} else {$script:old_path = $pwd}
 $script:default_prefix = '{dir:"{dir}\"}> '
-#$script:default_prefix = '{f.darkgray}{dir:"{dir}:\ "}{f.magenta}{user}{f.darkgray}@{f.darkcyan}{hostname}{f.darkgray}\> {r}'
-#$script:default_prefix = '{f.magenta}{user}{f.darkgray}@{f.darkcyan}{hostname}{f.darkgray}{f.darkgray}{dir:"  {dir}\"}> {r}'
+# Prefixes made by: Simon Kalmi Claesson
+#  $script:default_prefix = '{f.darkgray}{dir:"{dir}:\ "}{f.magenta}{user}{f.darkgray}@{f.darkcyan}{hostname}{f.darkgray}\> {r}'
+#  $script:default_prefix = '{f.magenta}{user}{f.darkgray}@{f.darkcyan}{hostname}{f.darkgray}{f.darkgray}{dir:"  {dir}\"}> {r}'
+#  $script:default_prefix = '{u.000A}{f.darkcyan}{u.e0b6}{f.white}{b.darkcyan} {dir:"{dir}\ "}{r}{f.darkcyan}{u.e0b0} {f.black}{b.magenta}{u.e0b0} {f.white}{user}@{hostname} {r}{f.magenta}{u.e0b0}{r} '
 $script:prefix_dir = $true
 $script:prefix_enabled = $true
 $script:prefix = $script:default_prefix
@@ -56,6 +60,7 @@ $script:prefixcolor = "darkgray"
 $script:prefixdircolor = "darkgray"
 $script:basedir = $psscriptroot
 $script:shell_suppress_menu_cls = $false
+$script:crosshell_autoclearmode = $autoclearmode
 if ($supressCls) {
   $script:shell_suppress_menu_cls = $true
 }
@@ -166,6 +171,10 @@ check-latestversion
 #Function to replace psstyle formatting with placeholders
 function script:ReplacePSStyleFormating($p) {
   [string]$s = $p
+
+  # prep parse
+  $s = $s.replace("{\n}","{u.000A}")
+
   # Directory parse
   if ($s -like "*{dir:*") {
     #fix check
@@ -201,6 +210,7 @@ function script:ReplacePSStyleFormating($p) {
 
   #Command parse
   [regex]$pattern = '\[([^]]+)\]'
+  $matches = $null
   $pattern.Matches($s) | foreach { [array]$matches += "$_" }
   foreach ($m in $matches) {
     $n = $m.trimstart("[")
@@ -211,7 +221,6 @@ function script:ReplacePSStyleFormating($p) {
     $np = $n.replace('$',"")
     $isVar = get-variable "$np"
     $isCmd = get-command "$n"
-    write-host "'$n' '$isVar' '$isCmd'"
     if ("$isVar" -eq "" -and "$isCmd" -eq "") {} else {
       $n = iex($n)
       $s = $s.replace($m,$n) 
@@ -238,7 +247,7 @@ function script:ReplacePSStyleFormating($p) {
   $s = $s.replace("{blinkoff}","$($psstyle.BlinkOff)")
   $s = $s.replace("{blink}","$($psstyle.Blink)")
   $s = $s.replace("{boldoff}","$($psstyle.BoldOff)")
-  $s = $s.replace("{bold","$($psstyle.Bold)")
+  $s = $s.replace("{bold}","$($psstyle.Bold)")
   $s = $s.replace("{hiddenoff}","$($psstyle.HiddenOff)")
   $s = $s.replace("{hidden}","$($psstyle.Hidden)")
   $s = $s.replace("{reverseoff}","$($psstyle.ReverseOff)")
@@ -265,6 +274,18 @@ function script:ReplacePSStyleFormating($p) {
   $s = $s.replace("{fi.symboliclink}","$($psstyle.FileInfo.SymbolicLink)")
   $s = $s.replace("{fi.executable}","$($psstyle.FileInfo.Executable)")
   $s = $s.replace("{fi.extension}","$($psstyle.FileInfo.Extension)")
+
+  #unicode key parse
+  $matches = $null
+  [regex]$pattern = '\{u.([^}]+)\}'
+  $pattern.Matches($s) | foreach { [array]$matches += "$_" }
+  foreach ($m in $matches) {
+    $n = $m.trimstart("\{u.")
+    $n = $n.trimend("\}")
+    $r = "[char]::ConvertFromUtf32(0x$n)"
+    $r = iex($r)
+    $s = $s.replace("$m","$r")
+  }
 
   $s = $s.replace("{f.black}","$($psstyle.Foreground.Black)")
   $s = $s.replace("{f.darkgray}","$($psstyle.Foreground.BrightBlack)")
@@ -576,6 +597,11 @@ if ($script:hostID -ne "pwsh.5l") {load-cmdlets}
 cd $startdir
 if ($noheader) {if ($script:shell_suppress_menu_cls -ne $true) {cls}} else {write-header}
 while ($loop) {
+  #autoclearmode
+  if ($script:crosshell_autoclearmode -eq $true) {
+    cls
+    if ($noheader) {if ($script:shell_suppress_menu_cls -ne $true) {cls}} else {write-header}
+  }
   #windowtitle
   $host.ui.rawui.windowtitle = $script:shell_opt_windowtitle_current
   forceExit -check
