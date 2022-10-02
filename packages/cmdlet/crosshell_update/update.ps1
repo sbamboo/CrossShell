@@ -3,7 +3,7 @@
   Cmdlet for updating the shell.
 #>
 param(
-  [switch]$revertbackup,[alias("p","package","packages","up")][swich]$updatepackages
+  [switch]$revertbackup,[alias("p","package","packages","up")][switch]$updatepackages
 )
 
 $script:crosshell_update_switch_updatepackages = $updatepackages
