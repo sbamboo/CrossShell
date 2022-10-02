@@ -20,7 +20,12 @@ $richprefix = $script:prefix
 
 if ($load) {
   if ($load -ne "0") {
-    $richprefix = $presets_content[$load]
+    if ($load -gt ($presets_content.Length -1)) {
+      write-host "No preset with index '$load'" -f red
+      exit
+    } else {
+      $richprefix = $presets_content[$load]
+    }
   }
 
   if ($debug) {write-host "$richprefix" -f green}
