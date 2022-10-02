@@ -1,2 +1,5 @@
 assets/forceexit.state
 assets/inputs.log
+*.state
+assets/inputs.log
+*.log

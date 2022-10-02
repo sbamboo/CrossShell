@@ -5,16 +5,32 @@
 
 param([alias("l")][string]$load,[alias("r")][switch]$reset)
 
+#get presets
+if (test-path "$psscriptroot\presets.list") {
+  $presets_content_local = gc "$psscriptroot\presets.list"
+}
+$presets_content_online = iwr "https://raw.githubusercontent.com/simonkalmiclaesson/packagehand_repository/main/repository/cmdlet/_private/private_richprefix/presets.list"
+if ($presets_content_online[0] -like "*# format*") {
+  $presets_content = $presets_content_online -split "`n"
+} else {
+  $presets_content = $presets_content_local -split "`n"
+}
+
 $richprefix = $script:prefix
 
 if ($load) {
-  #richprefix by Simon Kalmi Claesson
-  if ($load -eq "1") {$richprefix = '{u.000A}{f.darkcyan}{u.e0b6}{f.white}{b.darkcyan} {dir:"{dir}\ "}{r}{f.darkcyan}{u.e0b0} {f.black}{b.magenta}{u.e0b0} {f.white}{bold}{user}@{hostname} {r}{f.magenta}{u.e0b0}{boldoff}{r} '}
-  if ($load -eq "2") {$richprefix = '{u.000A}{dir:"{f.darkcyan}{u.e0b6}{f.white}{b.darkcyan} {dir}\ {r}{f.darkcyan}{u.e0b0} "}{f.black}{b.magenta}{u.e0b0} {f.white}{bold}{user}@{hostname} {r}{f.magenta}{u.e0b0}{boldoff}{r} '}
-  if ($load -eq "3") {$richprefix = '{f.magenta}{user}{f.darkgray}@{f.blue}{hostname}{f.darkgray}{f.darkgray}{dir:": {dir}\"}> {r}'}
+  if ($load -ne "0") {
+    $richprefix = $presets_content[$load]
+  }
+
+  write-host "$richprefix" -f green
+  #no ' fix
+  [string]$richprefixs = $richprefix
+  if ($richprefixs[0] -ne "'") {$richprefix = "'" + $richprefix}
+  if ($richprefixs[-1] -ne "'") {$richprefix = $richprefix + "'"}
 
   #load
-  CheckAndRun-input "prefix -set '$richprefix'"
+  CheckAndRun-input "prefix -set $richprefix"
 }
 
 if ($reset) {
