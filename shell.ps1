@@ -573,7 +573,8 @@ function write-header($nocls) {
   }
   if ($script:verctrl_lastver_matching -eq $false) {
     if ($script:msgcentral_notlatestversion -ne $false) {
-      echo "`e[5;31mYou are not running the latest version, consider git cloning...`e[0m"
+      #echo "`e[5;31mYou are not running the latest version, consider git cloning...`e[0m"
+      echo "`e[5;31mYou are not running the latest version, to update run 'update' or to also update al packages run 'update -p'`e[0m"
       #write-message "You are not running the latest version, consider git cloning..." darkred
       $hasmorelines = $true
     }
