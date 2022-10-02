@@ -3,7 +3,7 @@
   Cmdlet for handling rich prefix. (Needs a nerdfont installed)
 #>
 
-param([alias("l")][string]$load,[alias("r")][switch]$reset)
+param([alias("l")][string]$load,[alias("r")][switch]$reset,[switch]$debug)
 
 #get presets
 if (test-path "$psscriptroot\presets.list") {
@@ -23,7 +23,7 @@ if ($load) {
     $richprefix = $presets_content[$load]
   }
 
-  write-host "$richprefix" -f green
+  if ($debug) {write-host "$richprefix" -f green}
   #no ' fix
   [string]$richprefixs = $richprefix
   if ($richprefixs[0] -ne "'") {$richprefix = "'" + $richprefix}
