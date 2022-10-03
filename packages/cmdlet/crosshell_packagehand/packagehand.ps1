@@ -36,7 +36,8 @@ param(
 
   #misc
   [switch]$force,
-  [switch]$meta,
+  [alias("meta")]
+  [switch]$shmeta,
   [switch]$all,
   [alias("ar","reload")]
   [switch]$autoreload,
@@ -321,8 +322,8 @@ if ($update) {
       [string]$name = ($pack -split "\\|\/")[-1]
       [string]$pa = "$pack" + "\" + "$name" + ".meta"
       $metaraw = gc $pa
-      $meta = ConvertFrom-Json "$metaraw" 
-      $localversion = $meta.version
+      $metad = ConvertFrom-Json "$metaraw" 
+      $localversion = $metad.version
       #get packages details
       if ($lts) {
         $onlineversion = $repo_data.packagehand_repo."$name".LTS.version
@@ -472,7 +473,7 @@ if ($get) {
       }
       [string]$string = $name
       $string += " "*($longest - $string.length)
-      if ($meta) {
+      if ($shmeta) {
         if ($metad) {$metad}
       } else {
         if ($metaraw -ne "unknown") {
