@@ -9,7 +9,15 @@ You must accept the agreements bellow to be allowed to use gamehub api and gameh
 
  3. You may not under any circumstances use the api key for any malicious purpose or at all outside of the api calls made available to you.
  
- 4. I (the author) takes no responsibility for psychological issues/conditions that may arise when playing games on gamehub ex. addiction, stress or likewise.
+ 4. I (the author of gamehub) takes no responsibility for psychological issues/conditions that may arise when playing games on gamehub ex. addiction, stress or likewise.
+ 
+ 5. Since this is a closed beta, i (the author of gamehub) remain in a positition were I can request you to allow me access to update and/or remove the closed beta from your computer and access. 
+ 
+ 6. I (the author of gamehub) Remain in a position were I may change and update the terms of use. And whilst I should do my best at informing you (the user) of a tos changes. You should take your responsebilty to check the tos on the link: "". If you (the user) no longer wants to accept the tos please inform me and stop using the gamehub services. In other words I may change the tos and you would automaticly (by using the service) agree to the new tos, and if not contact me and stop using gamehub.
+ 
+ 7. You (the user) remain the right to disagree to the tos, but keep in mind that you are only allowed to use gamehub when you have agreed to the tos.
+
+ 8. 
 
 Developers: (Rules above still apply)
  1. Developers may not overuse the api or attempt to misuse or break the api.
