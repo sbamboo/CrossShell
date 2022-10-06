@@ -5,12 +5,14 @@ You must accept the agreements bellow to be allowed to use gamehub api and gameh
 
  1. You (the player/user) may only have one account saved in the cloud and only use that one account.
 
- 2. You may not edit or change the apis code without personal allowense from the author.
+ 2. You may not edit or change the api’s code without personal allowance from the author.
 
- 3. You may not under any circumstances use the api key for any malicious purpuse or at al outside of the api calls made avaliable to you.
+ 3. You may not under any circumstances use the api key for any malicious purpose or at all outside of the api calls made available to you.
+ 
+ 4. I (the author) takes no responsibility for psychological issues/conditions that may arise when playing games on gamehub ex. addiction, stress or likewise.
 
 Developers: (Rules above still apply)
  1. Developers may not overuse the api or attempt to misuse or break the api.
 
  2. Developers may not overuse the api or attempt to misuse or break the api.
- 
+
