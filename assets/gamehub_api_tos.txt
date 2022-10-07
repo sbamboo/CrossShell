@@ -23,6 +23,8 @@ I = The author of gamehub
  8. I (the author of gamehub) takes no responsibility for data loss and errors while saving since the api and the gamehub services/app is in development.
  
  9. When you (the user) agrees to this TOS you are legally bound to your agreement until you disagree or unbind yourself where you as stated in TOS.7 are no longer allowed to use any product under this TOS. Until you agree it again.
+ 
+ 10. I take no responsebility to problems hapening to your computer after installing and using gamehub services.
 
 Developers: (Rules above still apply)
  1. Developers may not overuse the api or attempt to misuse or break the api.
