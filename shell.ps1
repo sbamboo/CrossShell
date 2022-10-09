@@ -27,12 +27,38 @@ param(
 
   [switch]$noheader,
 
-  [switch]$autoclearmode
+  [switch]$autoclearmode,
+
+  [string]$devmodekey
 )
 
 if ($interpret) {
   . "$psscriptroot\readers\readFile" -file $interpret | iex
   exit
+}
+
+#devmode
+if ($devmodekey) {
+  $cl = Get-Location
+  $devmodecheck_devtools_validator = "$psscriptroot\packages\cmdlet\crosshell_devtools\internal_devkey_validator.ps1"
+  if (test-path "$devmodecheck_devtools_validator") {
+    . "$devmodecheck_devtools_validator" -localkey "$devmodekey"
+    function script:verify_Devmode {
+      $cl = Get-Location
+      $res = . "$devmodecheck_devtools_validator" -verify
+      set-location $cl
+      return $res
+    }
+  } else {
+    function script:verify_Devmode {
+      return $false
+    }
+  }
+  Set-Location $cl
+} else {
+  function script:verify_Devmode {
+    return $false
+  }
 }
 
 #Version control
@@ -91,7 +117,22 @@ if (test-path "$psscriptroot\assets") {} else {
   mkdir "$psscriptroot\assets"
 }
 
+# Function to import/install modules
+function script:installImportModule {
+  param([string]$moduleName)
+  # check if installed
+  if ((get-module -ListAvailable) -like "$moduleName") { 
+      # Check if imported
+      if ((Get-InstalledModule) -like "$moduleName") {} else {
+          import-module "$moduleName"
+      }
+  } else {
+      #install
+      Install-Module -name "$moduleName"
+  }
+}
 
+# Function to log a command
 function script:logCommand {
   param([string]$command,[switch]$doFormat)
   if ($doFormat) {
@@ -103,7 +144,7 @@ function script:logCommand {
   }
 }
 
-#autoLoadStates
+# Function to autoLoadStates
 function script:LoadStatesFromAssets {
   $cp = gl
   $di = "$basedir\assets\states\"
@@ -123,6 +164,7 @@ function script:LoadStatesFromAssets {
 }
 LoadStatesFromAssets
 
+# Function to savestates
 function script:saveState($variable,$value,$folder,$reset) {
   $cp = gl
   cd $basedir\assets
@@ -146,6 +188,7 @@ function script:saveState($variable,$value,$folder,$reset) {
   cd $cp
 }
 
+# Function to check latest version
 function check-latestversion{
   $script:verctrl_lastver_online = curl -s 'https://raw.githubusercontent.com/simonkalmiclaesson/CrossShell/main/lastver.mt'
   $script:verctrl_lastver_current = gc "$basedir\lastver.mt"
@@ -323,6 +366,8 @@ function script:ReplacePSStyleFormating($p) {
   $s = $s.replace("{r}","$($psstyle.reset)")
   return $s
 }
+
+# Function to write a formatted message
 function script:write-message{
   #Usage:   write-message <text-array> <foregroundcolor-array> <backgroundcolor-array>
   #         if <text-array> has more then one item, the function will write them both to one line but with diffrent color options if the color array have more then one item.
@@ -365,6 +410,7 @@ function script:write-message{
   }
 }
 
+# Function to load cmdlets
 function script:load-cmdlets {
   $script:pathables = $null
   cd $psscriptroot\packages\cmdlet
@@ -397,6 +443,7 @@ function script:load-cmdlets {
   $script:pathables = $script:pathables | sort
 }
 
+# Function to check/validate input and then run it
 function script:CheckAndRun-input {
   param([string]$in,[switch]$return,[switch]$returnFormated,[switch]$noerror)
   $orginput = $in
@@ -485,6 +532,7 @@ function script:CheckAndRun-input {
   if ($return -or $returnFormated) {return "$orginput"}
 }
 
+# Function to split a command and then run it 
 function splitCommandAndRun {
   param($command)
   [array]$commandA = $command -split ';'
@@ -493,6 +541,7 @@ function splitCommandAndRun {
   }
 }
 
+# Function to force an exit of the shell
 function forceExit {
   param([switch]$check,[switch]$set,[switch]$reset)
   $curdir = get-location
@@ -511,6 +560,7 @@ function forceExit {
   cd $curdir
 }
 
+# Function to write/run a profile file
 function write-profile {
   param([bool]$hasmorelines)
   if (test-path "$psscriptroot\assets\profile.crcmd") {
@@ -532,6 +582,7 @@ function write-profile {
 
 if ($script:hasresetforceExit) {} else {forceExit -reset; $script:hasresetforceExit}
 
+# Function to write a directory prefix
 function writeDirPrefix($dirp) {
   [array]$dircolor = $script:prefixdircolor -split ','
   $dir = $dirp
@@ -545,6 +596,7 @@ function writeDirPrefix($dirp) {
   }
 }
 
+# Function to write the console header
 function write-header($nocls) {
   if ($nocls -ne $true) {if ($script:shell_suppress_menu_cls -eq $true) {$script:shell_suppress_menu_cls = $false} else {cls}}
   $hasmorelines = $false
@@ -579,6 +631,13 @@ function write-header($nocls) {
       $hasmorelines = $true
     }
   }
+  #Devmode
+  $devmode = verify_Devmode
+  if ($devmode) {
+    write-message "Shell started in development mode. Please only use this mode if needed. (moreinfo: 'webi devmode')" DarkRed
+    $hasmorelines = $true
+  }
+  $devmode = $null
   write-profile -hasmorelines $hasmorelines
   if ($hasmorelines -eq "$true") {write-host ""}
   write-message "Welcome, write 'help' for help. To add messages to here edit: /assets/profile.ps1" green

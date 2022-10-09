@@ -2,21 +2,37 @@
   .SYNOPSIS
   Reloads the shell.
 #>
-param([alias("f")][switch]$full,[switch]$nocls,[switch]$noheader)
+param([alias("f")][switch]$full,[switch]$nocls,[switch]$noheader,[string]$devmodekey)
 
 if ($full) {
   cd $script:basedir
-  if ($noheader) {
-    if ($nocls) {
-      .\shell.ps1 -sdir $script:current_directory -supressCls -noheader
+  if ($devmodekey -eq "") {
+    if ($noheader) {
+      if ($nocls) {
+        .\shell.ps1 -sdir $script:current_directory -supressCls -noheader
+      } else {
+        .\shell.ps1 -sdir $script:current_directory -noheader
+      }
     } else {
-      .\shell.ps1 -sdir $script:current_directory -noheader
+      if ($nocls) {
+        .\shell.ps1 -sdir $script:current_directory -supressCls 
+      } else {
+        .\shell.ps1 -sdir $script:current_directory
+      }
     }
   } else {
-    if ($nocls) {
-      .\shell.ps1 -sdir $script:current_directory -supressCls 
+    if ($noheader) {
+      if ($nocls) {
+        .\shell.ps1 -sdir $script:current_directory -supressCls -noheader -devmodekey "$devmodekey"
+      } else {
+        .\shell.ps1 -sdir $script:current_directory -noheader -devmodekey "$devmodekey"
+      }
     } else {
-      .\shell.ps1 -sdir $script:current_directory
+      if ($nocls) {
+        .\shell.ps1 -sdir $script:current_directory -supressCls  -devmodekey "$devmodekey"
+      } else {
+        .\shell.ps1 -sdir $script:current_directory -devmodekey "$devmodekey"
+      }
     }
   }
 } else {

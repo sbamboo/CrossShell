@@ -49,7 +49,9 @@ param(
   [switch]$overlap,
 
   [alias("s")]
-  [string]$search
+  [string]$search,
+
+  [switch]$handle_protected_packages
 )
 
 # Get repo
@@ -243,13 +245,30 @@ if ($install) {
 if ($uninstall) {
   # Force
   if (!$force) {
-    $text = "Are you sure you want to uninstall " + "$package_name" + "?  "
+    # Builtin package warn
+    if ($package_name -like "crosshell_*") {
+      $text = "The " + "$package_name" + " package is an included package with crosshell, removing it might break things. Are you sure you want to remove it?  "
+    } else {
+      $text = "Are you sure you want to uninstall " + "$package_name" + "?  "
+    }
     Write-host -nonewline $text -f darkyellow
     $confirm = read-host "[Y/N] "
     if ($confirm -ne "y") {
       write-host "Operation canceled!" -f darkgray
       $progressPreference = $old_progressPreference
       exit
+    }
+  }
+  # Protected package
+  $devmode = verify_Devmode
+  if ($devmode -ne $true) {$handle_protected_packages = $false}
+  if ($package_name -like "*crosshell_packagehand*") {
+    if ($handle_protected_packages -ne $true) {
+      if ($package_name -like "*crosshell_packagehand*") {
+        write-host "Uninstallation of the packagehand package is denied by default since it's vital to the function of crosshell. Although not recomended, to uninstall protected packages start crosshell in devmode and use the 'handle_protected_packages' flag with packagehand." -f red
+        $progressPreference = $old_progressPreference
+        exit
+      }
     }
   }
   # Check if installed
@@ -300,6 +319,11 @@ if ($update) {
       }
     }
     $match_Packs = $match_Packs | sort -property name
+
+    # Remove nested matches
+    $parentDir = "$script:basedir\packages\cmdlet\"
+    $parentDir = $parentDir -replace "\\",'\\'
+    $match_Packs = $match_Packs | where -FilterScript { ((("$_" -replace "$parentDir","") -split "\\").length) -lt "2"}
 
     #create list of packages having a meta file
     foreach ($pack in $match_Packs) {
@@ -447,7 +471,13 @@ if ($get) {
     }
   }
 
+  # Sort
   $match_Packs = $match_Packs | sort -property name
+
+  # Remove nested matches
+  $parentDir = "$script:basedir\packages\cmdlet\"
+  $parentDir = $parentDir -replace "\\",'\\'
+  $match_Packs = $match_Packs | where -FilterScript { ((("$_" -replace "$parentDir","") -split "\\").length) -lt "2"}
 
   $Longest = 0
   foreach ($pack in $match_Packs) {
