@@ -2,6 +2,9 @@ param($file,$cmd,$reader,[switch]$test)
 
 $pwshpath = "pwsh"
 
+#read config
+$configRaw = get-content "$psscriptroot\installs.config"
+
 if ($test) {
   .\readFile.ps1 ".\.tests\test.bat" | iex
   .\readFile.ps1 ".\.tests\test.js" | iex
@@ -26,8 +29,8 @@ if ($test) {
       if ($reader -eq "bash") {$readerp = "$psscriptroot\gitbash_extracted_bash\usr\bin\bash.exe"}
       if ($reader -eq "cmd") {$readerp = "cmd.exe /c"}
       if ($reader -eq "pwsh") {$readerp = "$pwshpath -c"}
-      if ($reader -eq "python") {[string]$cmdo = "$readerp " + "'" + "$cmd" + "'"} else {[string]$cmdo = "$readerp $cmd"}
-      write-host "$cmdo"
+      if ($reader -eq "python") {[string]$cmdo = "$readerp " + '"' + "$cmd" + '"'} else {[string]$cmdo = "$readerp $cmd"}
+      #write-host "$cmdo"
       return $cmdo
     } else {
       $f = "$psscriptroot\tmp.nodecommand.js"

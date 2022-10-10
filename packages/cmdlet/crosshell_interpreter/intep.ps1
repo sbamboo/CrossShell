@@ -3,11 +3,11 @@
   Interpriter for python, nodejs, pwsh, cmd and bash.
 #>
 param(
-  [Alias("f")]
-  [string]$file,
-
   [Alias("c")]
   [string]$icommand,
+
+  [Alias("f")]
+  [string]$file,
 
   [switch]$pwsh,
   [switch]$python,
@@ -27,7 +27,13 @@ if ($file) {
   . "$script:basedir\readers\readFile" -file $file -reader $reader| iex
 } else {
   if ($icommand) {
-    . "$script:basedir\readers\readFile" -cmd "$icommand" -reader $reader | iex
+    $c = . "$script:basedir\readers\readFile" -cmd "$icommand" -reader $reader
+    iex($c)
+    if ($c -like "*tmp.nodecommand.js*") {
+      if (test-path "$script:basedir\readers\tmp.nodecommand.js") {
+        remove-item "$script:basedir\readers\tmp.nodecommand.js"
+      }
+    }
   } else {
     if ($reader) {} else {write-host -nonewline "Readertype: "; $reader = read-host}
     cls
