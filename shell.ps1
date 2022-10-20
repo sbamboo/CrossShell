@@ -425,6 +425,7 @@ function script:load-cmdlets {
     if ($fileext -eq ".bat") {$pathableFile = $true}
     if ($fileext -eq ".exe") {$pathableFile = $true}
     if ($fileext -eq ".pwsh") {$pathableFile = $true}
+    if ($fileext -eq ".py") {$pathableFile = $true}
     #check for hidden files
     $filepathO = $filepath.replace("\",'§')
     [array]$filepathA = $filepathO -split '§'
@@ -488,7 +489,15 @@ function script:CheckAndRun-input {
       }
     }
     #$in = $in -replace "$command",". $final_cmdletPath"
-    [array]$script:partials += ". $script:final_cmdletpath $script:final_params"
+    if ("$script:final_cmdletpath" -ne "") {
+      if ((split-path "$script:final_cmdletpath" -extension) -eq ".py") {
+        [string]$sstring = 'python "' + "$script:final_cmdletpath" + '"'
+        $sstring = $sstring -replace '\\','/'
+        [array]$script:partials += $sstring
+      } else {
+        [array]$script:partials += ". $script:final_cmdletpath $script:final_params"
+      }
+    }
   }
   if ($script:partials.length -gt "1") {
     foreach ($p in $script:partials) {
