@@ -1,5 +1,0 @@
-<#
-  .SYNOPSIS
-#>
-
-param($file)
