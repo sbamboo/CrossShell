@@ -1,0 +1,11 @@
+fix/add:
+  calc: noParse.Space
+        noParse.parentheses
+
+  mathplan:
+        add.Selection
+
+Make:
+  mathmethods:
+        param.Category
+        font.allowSmalChar

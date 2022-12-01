@@ -1,0 +1,10 @@
+{
+  "version": "2.0",
+  "type": "cmdlet",
+  "Description": "Contains cmdlets for reloading and restarting the console",
+  "sourceType": "web",
+  "source": "https://github.com/simonkalmiclaesson/packagehand_repository/raw/main/repository/cmdlet/_builtins/crosshell_reload-restart/crosshell_reload-restart_latest_global.package",
+  "format": "zip",
+  "target": "global",
+  "versionTag": "latest"
+}

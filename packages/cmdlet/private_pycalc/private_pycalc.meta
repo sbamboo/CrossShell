@@ -1,0 +1,10 @@
+{
+  "Description": "Python calculator.",
+  "target": "global",
+  "source": "https://github.com/simonkalmiclaesson/packagehand_repository/raw/main/repository/cmdlet/_private/private_pycalc/private_pycalc_latest_global.package",
+  "version": "1.0",
+  "sourceType": "web",
+  "type": "cmdlet",
+  "format": "zip",
+  "versionTag": "latest"
+}

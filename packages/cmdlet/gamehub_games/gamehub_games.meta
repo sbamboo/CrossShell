@@ -1,0 +1,10 @@
+{
+  "source": "https://github.com/simonkalmiclaesson/packagehand_repository/raw/main/repository/cmdlet/gamehub_games/gamehub_games_latest_global.package",
+  "versionTag": "latest",
+  "Description": "Cmdlet containing diffrent games.",
+  "version": "1.0",
+  "target": "global",
+  "format": "zip",
+  "type": "cmdlet",
+  "sourceType": "web"
+}

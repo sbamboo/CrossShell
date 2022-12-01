@@ -1,0 +1,10 @@
+{
+  "format": "zip",
+  "sourceType": "web",
+  "target": "global",
+  "version": "1.2",
+  "type": "cmdlet",
+  "source": "https://github.com/simonkalmiclaesson/packagehand_repository/raw/main/repository/cmdlet/_builtins/crosshell_settings/crosshell_settings_latest_global.package",
+  "Description": "Contians cmdlets for handling and managing settings for the console.",
+  "versionTag": "latest"
+}

@@ -1,0 +1,41 @@
+ji (JustImport):
+  ji import "$file" -local (imports thru dot source)
+  ji import "$file" -crossession (saves to justimports/imports folder)
+
+ph (package handler):
+  ph add *
+  ph add -all
+  ph add "$adress"
+  ph add "$id"
+  ph add "$packagefile"
+  ph remove "$packagename"
+
+es (equationSolver):
+  eh "equation"
+  (use either netlify project or other subistute)
+
+{repo:
+  type:{
+    $reader
+    $cmdlet
+  }
+  {Source:
+    linked:{
+      $win_url
+      $lnk_url
+      $mac_url
+      $uni_url
+    }
+    repo:{
+      $link
+      $id
+      $hash
+    }
+  }
+}
+
+*multiline support + split by ; (in checkandrun)
+*comments (command, -printcomments)
+*-noexit flag
+game command with games (run by name, or -list param to list)
+commands in calc tui with $c prefix
