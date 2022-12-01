@@ -1,0 +1,10 @@
+{
+  "versionTag": "latest",
+  "format": "zip",
+  "version": "1.0",
+  "target": "global",
+  "type": "cmdlet",
+  "Description": "Contains cmdlets for starting apps or files on the computer.",
+  "sourceType": "web",
+  "source": "https://github.com/simonkalmiclaesson/packagehand_repository/raw/main/repository/cmdlet/_builtins/crosshell_start/crosshell_start_latest_global.package"
+}

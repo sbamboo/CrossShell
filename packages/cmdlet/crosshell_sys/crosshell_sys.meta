@@ -1,0 +1,10 @@
+{
+  "versionTag": "latest",
+  "format": "zip",
+  "version": "1.3",
+  "target": "global",
+  "type": "cmdlet",
+  "Description": "Contains system managing cmdlets.",
+  "sourceType": "web",
+  "source": "https://github.com/simonkalmiclaesson/packagehand_repository/raw/main/repository/cmdlet/_builtins/crosshell_sys/crosshell_sys_latest_win.package"
+}

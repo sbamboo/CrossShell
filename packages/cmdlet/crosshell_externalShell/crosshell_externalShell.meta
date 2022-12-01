@@ -1,0 +1,10 @@
+{
+  "versionTag": "latest",
+  "format": "zip",
+  "version": "1.1",
+  "target": "global",
+  "type": "cmdlet",
+  "Description": "Cmdlet to start the console in a separate window.",
+  "sourceType": "web",
+  "source": "https://github.com/simonkalmiclaesson/packagehand_repository/raw/main/repository/cmdlet/_builtins/crosshell_externalShell/crosshell_externalShell_latest_global.package"
+}

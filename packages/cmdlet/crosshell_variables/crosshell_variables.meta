@@ -1,0 +1,10 @@
+{
+  "versionTag": "latest",
+  "format": "zip",
+  "version": "1.0",
+  "target": "global",
+  "type": "cmdlet",
+  "Description": "Contians cmdlets for handling variables.",
+  "sourceType": "web",
+  "source": "https://github.com/simonkalmiclaesson/packagehand_repository/raw/main/repository/cmdlet/_builtins/crosshell_variables/crosshell_variables_latest_global.package"
+}

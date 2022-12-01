@@ -1,0 +1,10 @@
+{
+  "versionTag": "latest",
+  "format": "zip",
+  "version": "1.1",
+  "target": "global",
+  "type": "cmdlet",
+  "Description": "Contains cmdlets for information.",
+  "sourceType": "web",
+  "source": "https://github.com/simonkalmiclaesson/packagehand_repository/raw/main/repository/cmdlet/_builtins/crosshell_information/crosshell_information_latest_global.package"
+}

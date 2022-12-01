@@ -1,0 +1,10 @@
+{
+  "versionTag": "latest",
+  "format": "zip",
+  "version": "2.1",
+  "target": "global",
+  "type": "cmdlet",
+  "Description": "Development tools for Crosshell.",
+  "sourceType": "web",
+  "source": "https://github.com/simonkalmiclaesson/packagehand_repository/raw/main/repository/cmdlet/_development/crosshell_devtools/crosshell_devtools_latest_global.package"
+}

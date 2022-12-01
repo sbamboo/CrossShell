@@ -1,0 +1,10 @@
+{
+  "versionTag": "latest",
+  "format": "zip",
+  "version": "1.0",
+  "target": "global",
+  "type": "cmdlet",
+  "Description": "Cmdlet for changing your directory, moves to dir.",
+  "sourceType": "web",
+  "source": "https://github.com/simonkalmiclaesson/packagehand_repository/raw/main/repository/cmdlet/_builtins/crosshell_changedirectory/crosshell_changedirectory_latest_global.package"
+}

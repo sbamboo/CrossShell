@@ -1,0 +1,10 @@
+{
+  "versionTag": "latest",
+  "format": "zip",
+  "version": "1.0",
+  "target": "global",
+  "type": "cmdlet",
+  "Description": "Cmdlets for cross-language interpritation in the console.",
+  "sourceType": "web",
+  "source": "https://github.com/simonkalmiclaesson/packagehand_repository/raw/main/repository/cmdlet/_builtins/crosshell_interpreter/crosshell_interpreter_latest_global.package"
+}

@@ -1,0 +1,10 @@
+{
+  "versionTag": "latest",
+  "format": "zip",
+  "version": "3.0",
+  "target": "global",
+  "type": "cmdlet",
+  "Description": "Cmdlets for managing the console prefix.",
+  "sourceType": "web",
+  "source": "https://github.com/simonkalmiclaesson/packagehand_repository/raw/main/repository/cmdlet/_builtins/crosshell_prefix/crosshell_prefix_latest_global.package"
+}
