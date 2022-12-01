@@ -76,7 +76,7 @@ if ($devmodekey) {
 }
 #write-host "[$(get-date)]: Core: Checked Devmode" -f yellow
 #Version control
-$script:crosshell_versionID = "0.0.5_dev-A20"
+$script:crosshell_versionID = "0.0.6_dev-A1"
 $script:crosshell_versionChannel = "Alpha"
 
 $script:shell_opt_multiline = $false
@@ -686,6 +686,8 @@ function write-header($nocls) {
         write-message "You are running a alpha version of crosshell, bugs may occure and some features migth be missing." DarkYellow
     } elseif ($script:crosshell_versionChannel -eq "Beta") {
         write-message "You are running a beta version of crosshell, although these are stabler then alpha versions buggs may still occure." DarkYellow
+    } elseif ($script:crosshell_versionChannel -eq "Viva") {
+        write-message "You are running the current version of Crosshell-VIVA, these are generally stable but may contain bugs." DarkYellow
     } else {
         write-message "The version channel of your crosshell installation is not reconized, this may be a bug" DarkRed
     }
