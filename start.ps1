@@ -1,1 +1,0 @@
-pwsh $psscriptroot\shell.ps1

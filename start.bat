@@ -1,1 +1,0 @@
-pwsh .\shell.ps1

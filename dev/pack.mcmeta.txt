@@ -1,6 +1,0 @@
-{
- "pack": {
-   "pack_format": 7,
-   "description": "The Axolot 77's Server Resourcepack 2.3"
- }
-}
