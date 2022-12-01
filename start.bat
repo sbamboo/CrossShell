@@ -1,1 +1,1 @@
-pwsh .\shell.ps1
+pwsh .\start.ps1 -NoProfile

@@ -1,10 +1,10 @@
 {
-  "target": "global",
+  "version": "1.7",
   "type": "cmdlet",
-  "versionTag": "latest",
-  "sourceType": "web",
-  "version": "1.3",
-  "Description": "Updater for crosshell (beta)",
   "format": "zip",
+  "sourceType": "web",
+  "Description": "Updater for crosshell (beta)",
+  "target": "global",
+  "versionTag": "latest",
   "source": "https://github.com/simonkalmiclaesson/packagehand_repository/raw/main/repository/cmdlet/_builtins/crosshell_update/crosshell_update_latest_global.package"
 }

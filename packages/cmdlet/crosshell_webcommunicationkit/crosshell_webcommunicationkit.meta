@@ -1,0 +1,10 @@
+{
+  "version": "1.0",
+  "type": "cmdlet",
+  "format": "zip",
+  "sourceType": "web",
+  "Description": "Crosshell.builtins.webcommunicationkit_desc",
+  "target": "global",
+  "versionTag": "latest",
+  "source": "https://github.com/simonkalmiclaesson/packagehand_repository/raw/main/repository/cmdlet/_builtins/crosshell_webcommunicationkit/crosshell_webcommunicationkit_latest_global.package"
+}

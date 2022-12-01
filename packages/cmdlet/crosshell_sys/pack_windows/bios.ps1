@@ -10,7 +10,7 @@ if (!$force) {
     while ($confirmed -ne $true) {
         write-host -nonewline "Are you sure you want to reboot your computer into bios? " -f darkyellow
         $c = read-host "[y/n] "
-        if ($c -eq "y") {$confirmed = $true}
+        if ($c -eq "y") {$confirmed = $true} elseif ($c -eq "n") {exit}
     }
 }
 

@@ -9,29 +9,29 @@ if ($full) {
   if ($devmodekey -eq "") {
     if ($noheader) {
       if ($nocls) {
-        .\shell.ps1 -sdir $script:current_directory -supressCls -noheader
+        .\core\core.ps1 -sdir $script:current_directory -supressCls -noheader
       } else {
-        .\shell.ps1 -sdir $script:current_directory -noheader
+        .\core\core.ps1 -sdir $script:current_directory -noheader
       }
     } else {
       if ($nocls) {
-        .\shell.ps1 -sdir $script:current_directory -supressCls 
+        .\core\core.ps1 -sdir $script:current_directory -supressCls 
       } else {
-        .\shell.ps1 -sdir $script:current_directory
+        .\core\core.ps1 -sdir $script:current_directory
       }
     }
   } else {
     if ($noheader) {
       if ($nocls) {
-        .\shell.ps1 -sdir $script:current_directory -supressCls -noheader -devmodekey "$devmodekey"
+        .\core\core.ps1 -sdir $script:current_directory -supressCls -noheader -devmodekey "$devmodekey"
       } else {
-        .\shell.ps1 -sdir $script:current_directory -noheader -devmodekey "$devmodekey"
+        .\core\core.ps1 -sdir $script:current_directory -noheader -devmodekey "$devmodekey"
       }
     } else {
       if ($nocls) {
-        .\shell.ps1 -sdir $script:current_directory -supressCls  -devmodekey "$devmodekey"
+        .\core\core.ps1 -sdir $script:current_directory -supressCls  -devmodekey "$devmodekey"
       } else {
-        .\shell.ps1 -sdir $script:current_directory -devmodekey "$devmodekey"
+        .\core\core.ps1 -sdir $script:current_directory -devmodekey "$devmodekey"
       }
     }
   }

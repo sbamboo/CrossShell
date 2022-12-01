@@ -2,3 +2,5 @@ rewrite interpriter to better work and be more stable with multiple languages
 rewrite shell to allow cmdlets to be .sh .py ex...
 make a safeiex function
 *fman buffer save
+
+force commonparameter which uses -force param on command (alias /f)

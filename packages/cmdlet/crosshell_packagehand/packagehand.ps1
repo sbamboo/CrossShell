@@ -54,12 +54,17 @@ param(
   [switch]$handle_protected_packages
 )
 
+# Need network
+if ($install -or $update -or $list -or $reloadrepo -or $search) {INeedNetwork}
+
 # Get repo
+if ($get) { $old_ErrorActionPreference = $ErrorActionPreference; $ErrorActionPreference = "SilentlyContinue" }
 if ($repo) { (iwr -uri "$repo").content } else {
   $script:packagehand_private_repo_rawdata = (iwr -uri "https://raw.githubusercontent.com/simonkalmiclaesson/packagehand_repository/main/repo.json").content
   if ($script:packagehand_private_repo_rawdata) {$repo_raw = $script:packagehand_private_repo_rawdata} else {$repo_raw = (iwr -uri "https://raw.githubusercontent.com/simonkalmiclaesson/packagehand_repository/main/repo.json").content}
 }
 $repo_data = ConvertFrom-Json "$repo_raw"
+if ($get) { $ErrorActionPreference = $old_ErrorActionPreference }
 
 #get os
 if ($IsWindows) {
@@ -262,13 +267,18 @@ if ($uninstall) {
   # Protected package
   $devmode = verify_Devmode
   if ($devmode -ne $true) {$handle_protected_packages = $false}
+  $devmode = $null
   if ($package_name -like "*crosshell_packagehand*") {
     if ($handle_protected_packages -ne $true) {
-      if ($package_name -like "*crosshell_packagehand*") {
         write-host "Uninstallation of the packagehand package is denied by default since it's vital to the function of crosshell. Although not recomended, to uninstall protected packages start crosshell in devmode and use the 'handle_protected_packages' flag with packagehand." -f red
         $progressPreference = $old_progressPreference
         exit
-      }
+    }
+  } elseif ($package_name -like "*crosshell_update*") {
+    if ($handle_protected_packages -ne $true) {
+      write-host "Uninstallation of the update package is denied by default since it's vital to the function of crosshell. Although not recomended, to uninstall protected packages start crosshell in devmode and use the 'handle_protected_packages' flag with packagehand." -f red
+      $progressPreference = $old_progressPreference
+      exit
     }
   }
   # Check if installed

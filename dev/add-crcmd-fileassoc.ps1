@@ -1,4 +1,5 @@
 <#
+  .SYNOPSIS
   Adds crcmd file to be executable.
 #>
 
@@ -22,7 +23,7 @@ if ($reset) {
   write-host -nonewline "Are you sure this will edit the registry! [Y/N] " -f yellow
   $yn = read-host
   if ($yn -eq "y") {
-    $fa = "$script:psscriptroot\..\shell.ps1"
+    $fa = "$script:psscriptroot\..\core\core.ps1"
     crosshellfileassoc -shellfile "$fa" -filetype ".crcmd"
   }
 }

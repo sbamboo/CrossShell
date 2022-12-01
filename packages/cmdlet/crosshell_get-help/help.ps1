@@ -27,7 +27,7 @@ if ($online) {$help_mappedCmdlets_getonline = $true} else {$help_mappedCmdlets_g
 
 if ($searchterm) {
   $script:pathables_backup = $script:pathables
-  $script:pathables = $script:pathables | Where-Object -FilterScript { $_ -like "$searchterm" }
+  $script:pathables = $script:pathables | Where-Object -FilterScript { "$((($_ -split '§')[0]).trimend(" "))" -like "$searchterm" }
 }
 
 function GetLongest {
@@ -47,6 +47,8 @@ $l = $script:pathables.length; write-host " $l command(s)" -f darkgray
 write-host "==========================================" -f darkgreen
 $counter = 0
 foreach ($c in $script:pathables) {
+  $params = $null
+  $desc = $null
   $counter++
   [array]$cmdletData = $c -split " § "
   [string]$cmdletPath = $cmdletData[1]
@@ -59,6 +61,19 @@ foreach ($c in $script:pathables) {
       $desc = "(Executable)"
     } elseif ($extension -eq ".bat") {
       $desc = "(Batch file)"
+    } elseif ($extension -eq ".py") {  
+      $descriptionConfig = "$(($cmdletPath -replace ($(split-path $cmdletPath -leaf))).trimend('/'))$($cmdletName)_desc.cfg"
+      $argumentsConfig = "$(($cmdletPath -replace ($(split-path $cmdletPath -leaf))).trimend('/'))$($cmdletName)_argu.cfg"
+      if (test-path "$descriptionConfig") {
+        $desc = get-content $descriptionConfig
+      }
+      if (test-path $argumentsConfig) {
+        $params_r = get-content $argumentsConfig
+        foreach ($l in $params_r) {
+          [string]$params_lr += "[-$l] "
+        }
+        $params = $params_lr
+      }
     } else {
       if ($mapped_cmdlets -like "*$name*") {
         if ($help_mappedCmdlets_getonline) {

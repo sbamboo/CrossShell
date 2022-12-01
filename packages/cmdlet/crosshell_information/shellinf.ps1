@@ -7,6 +7,10 @@
     #pathables
     foreach ($p in $pathables) {
         $name = ($p -split " § ")[0]
+        #anaconda
+        if ($name -eq "anaconda") {
+            $anaconda_internal_isinstalled = ($p -split " § ")[1]
+        }
         [string]$parsed_pathables += "$name;"
     }
     [string]$parsed_pathables = $parsed_pathables.trimend(';')
@@ -31,7 +35,7 @@
     }
     $match_Packs = $match_Packs | sort -property name
     foreach ($p in $match_Packs) {
-        if ($p -ne "") {
+        if ($p -ne "") {    
             $p = split-path $p -Leaf
             [string]$installedPackages += "$p;"
         }
@@ -39,6 +43,27 @@
     [string]$installedPackages = $installedPackages.trimend(';')
     #devmode
     $shellinfdevmode = verify_Devmode
+    #Anaconda
+    if ($anaconda_internal_isinstalled -ne "") {
+        $anaconda_internal_location_array = $anaconda_internal_isinstalled.split("\")
+        $anaconda_internal_location = $anaconda_internal_isinstalled.replace($anaconda_internal_location_array[-1],"")
+    } else {
+        $anaconda_internal_location = "$basedir\packages\cmdlet\anaconda"
+    }
+    if ($installedPackages -like "*anaconda*") {
+        $sd = Get-Location
+        if (test-path $anaconda_internal_location) {
+            Set-Location $anaconda_internal_location
+            . .\.versionKeep.ps1
+            Set-Location $sd
+            $anaconda_status = "Installed and avaliable."
+        } else {
+            $anaconda_status = "Installed but location not found."
+        }
+    } else {
+        $anaconda_status = "Not installed! Or not found."
+    }
+
 
 # Info block
 $info = @"
@@ -66,6 +91,7 @@ WindowTitle:     $script:shell_opt_windowtitle_current
 hostWindowTitle: $old_windowtitle
 OriginalTitle:   $script:shell_opt_windowtitle_original
 LastTitle:       $script:shell_opt_windowtitle_last
+LastSaveTitle:   $script:shell_opt_windowtitle_lastsave
 
 CurrentDir:      "$script:current_directory"
 
@@ -80,6 +106,17 @@ PrefixDirColor:  $script:prefixdircolor
 Pathables:       "$parsed_pathables"
 
 InstalledPackages: "$installedPackages"
+
+AnacondaStatus:    $anaconda_status
+AnacondaVersion:   $anaconda_type, $anaconda_Version
+AnacondaNameID:    $anaconda_nameid
+AnacondaLocation:  "$anaconda_internal_location"
+_TypeSpace:        $anaconda_typespace
+_AnacondaFlags:    "$anaconda_flags"
+_vvgID:            $anaconda_vvgid
+_InstallUUID:      $anaconda_installUUID
+_ProtocolId:       $anaconda_ProtocollID
+_WrittenLocation:  "$anaconda_installloc"
 
 "@
 
