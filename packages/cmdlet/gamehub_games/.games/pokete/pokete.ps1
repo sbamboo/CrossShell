@@ -1,1 +1,0 @@
-python pokete\pokete.py
