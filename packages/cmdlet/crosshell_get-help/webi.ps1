@@ -9,7 +9,7 @@ INeedNetwork
 
 #list
 if ($list) {
-  [string]$id_linkbase = "https://simonkalmiclaesson.github.io/"
+  [string]$id_linkbase = "https://sbamboo.github.io/"
   $id_link1 = "websa/shortener.html"
   $url = "$id_linkbase" + "$id_link1" + "?list"
   $c = "id_shorteners = "
@@ -24,7 +24,7 @@ if ($list) {
 
 #id
 if ($id) {
-    [string]$id_linkbase = "https://simonkalmiclaesson.github.io/"
+    [string]$id_linkbase = "https://sbamboo.github.io/"
     $id_link1 = "websa/shortener.html"
     $url = "$id_linkbase" + "$id_link1" + "?id=$id&giveurl"
     if ($open) {
@@ -58,7 +58,7 @@ if ($id) {
 
 #nid
 if ($nid) {
-  [string]$nid_linkbase = "https://simonkalmiclaesson.github.io/"
+  [string]$nid_linkbase = "https://sbamboo.github.io/"
   $nid_link1 = "crosshell_web/idsystem/id_handler.html"
   $url = "$nid_linkbase" + "$nid_link1" + "?id=$nid&giveurl"
   if ($open) {
